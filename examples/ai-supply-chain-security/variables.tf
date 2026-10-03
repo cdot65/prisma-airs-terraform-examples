@@ -1,3 +1,4 @@
+# Identity: Keep the owned prefix stable and use annotations for update lessons.
 variable "name_prefix" {
   description = "Unique prefix for resources owned by this example."
   type        = string

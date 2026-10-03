@@ -1,3 +1,4 @@
+# Identity: Keep the owned prefix stable and use annotations for update lessons.
 variable "name_prefix" {
   description = "Unique prefix for resources owned by this example."
   type        = string
@@ -9,9 +10,11 @@ variable "description_suffix" {
   default     = "initial"
 }
 
+# Application contract: Templates must match the real endpoint request and response.
 variable "target_endpoint" {
   description = "HTTPS endpoint of an application you are authorized to assess."
   type        = string
+
   validation {
     condition     = startswith(var.target_endpoint, "https://")
     error_message = "Supply an HTTPS target endpoint."
@@ -33,6 +36,7 @@ variable "response_key" {
   type        = string
 }
 
+# Credentials: Load the sensitive header map through TF_VAR_target_auth_headers.
 variable "target_auth_headers" {
   description = "Authentication headers supplied through TF_VAR_target_auth_headers."
   type        = map(string)
