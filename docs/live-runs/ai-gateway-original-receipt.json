@@ -1,0 +1,15 @@
+{
+  "project": "ai-gateway",
+  "provider": "0.9.0",
+  "terraform": "1.16.4",
+  "validated_at": "2026-10-03T12:24:43Z",
+  "create_plan_empty": true,
+  "update_plan_empty_after_refresh": true,
+  "destroy_complete": true,
+  "managed_state_empty": true,
+  "configuration_normalized_sha256": {
+    "main.tf": "315ddd410143010984d3095a53b379a118d8f04dfac96bbb79a501c1b94264fc",
+    "variables.tf": "ce6e89ac19074b60aa11f4c9276fd61334e9ab97f518a9c864a55a66a6ba11ae"
+  },
+  "evidence": "ai-gateway.md"
+}

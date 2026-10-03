@@ -1,99 +1,76 @@
-# AI Red Teaming
+# Get started with AI Red Teaming
 
-Register an authenticated application target using native HCL request/response templates, and create a custom prompt-set container for its assessment workflow. The target application and its credentials exist outside this Terraform project.
+Register an authenticated application as a Red Team target and create a custom prompt-set container. Terraform manages the endpoint contract, request/response templates, authentication headers, and collection metadata.
 
-| Managed object | Purpose |
-| --- | --- |
-| `prisma-airs_red_team_target.application` | Endpoint, payload templates and sensitive authentication headers |
-| `prisma-airs_red_team_custom_prompt_set.assessment` | Named custom attack-prompt collection |
+## Before you start
 
-Provider 0.9.0 manages the prompt-set container. Populate its prompts through the AIRS console/CLI separately. Creating the target does not probe the endpoint or start an assessment.
+Install Terraform 1.8 or later, before 2.0, and load the three [management environment variables](../../README.md#get-started). Your service account needs Red Team management access. Provider 0.9.0 is pinned by this project.
 
-## Inputs and authentication
+You also need a reachable application endpoint, its real request/response format, and any authentication headers. The target application is provisioned separately.
 
-Supply shared management credentials through the `PANW_MGMT_*` environment variables or the tenant helper. The service account needs Red Team management access.
-
-| Input | Purpose |
-| --- | --- |
-| `name_prefix` | Unique prefix for the new target and prompt set |
-| `target_endpoint` | Actual HTTPS endpoint you are authorized to assess |
-| `request_body` | Native request object containing `{INPUT}` |
-| `response_body` | Native response template containing `{RESPONSE}` |
-| `response_key` | Field holding response text |
-| `target_auth_headers` | Sensitive map loaded through `TF_VAR_target_auth_headers` |
-| `description_suffix` | Editable annotation; defaults to `initial` |
-
-Copy `terraform.tfvars.example` to `terraform.tfvars` and replace the endpoint and templates with your application's real contract. Its sample URL/payload are placeholders. Load authentication headers from your credential store as a JSON object in `TF_VAR_target_auth_headers`; they are retained in sensitive Terraform state and are never outputs.
-
-The live vulture run reused a preexisting validated Runtime endpoint and its header authentication as inputs to a new disposable registration. The existing target was neither imported nor changed.
-
-## Execute
-
-From this directory, after supplying the endpoint, templates and authentication:
+## Configure and apply
 
 ```bash
-export TF_VAR_name_prefix="tf-redteam-$(date -u +%Y%m%d%H%M%S)"
+cp terraform.tfvars.example terraform.tfvars
+```
+
+Replace the sample endpoint and payload templates with your application's contract. Choose an unused `name_prefix`, such as `tf-redteam-yourname`.
+
+| Input | What to supply |
+| --- | --- |
+| `name_prefix` | Unique names for the target and prompt set |
+| `target_endpoint` | Your application's HTTPS endpoint |
+| `request_body` | Native object containing the `{INPUT}` placeholder |
+| `response_body` | Native response template containing `{RESPONSE}` |
+| `response_key` | Field containing response text |
+| `target_auth_headers` | Sensitive header map from the environment |
+| `description_suffix` | Optional editable annotation; default `initial` |
+
+Load `TF_VAR_target_auth_headers` from your credential store as a JSON object, for example a map containing your application's `Authorization` header. Do not paste credentials into the input file or commit them. Sensitive headers are retained in Terraform state.
+
+```bash
 terraform init
-terraform validate
-python3 ../../scripts/with-tenant.py vulture terraform plan -out=create.tfplan
-python3 ../../scripts/with-tenant.py vulture terraform apply create.tfplan
-python3 ../../scripts/with-tenant.py vulture terraform plan -detailed-exitcode
-
-export TF_VAR_description_suffix=updated
-python3 ../../scripts/with-tenant.py vulture terraform plan -out=update.tfplan
-python3 ../../scripts/with-tenant.py vulture terraform apply update.tfplan
-python3 ../../scripts/with-tenant.py vulture terraform apply -refresh-only
-python3 ../../scripts/with-tenant.py vulture terraform plan -detailed-exitcode
-
-python3 ../../scripts/with-tenant.py vulture terraform destroy
-python3 ../../scripts/with-tenant.py vulture terraform state list
+terraform plan -out=create.tfplan
+terraform apply create.tfplan
+terraform output
 ```
 
-An unchanged plan exits `0`; `2` means proposed changes; `1` means an error. With credentials already exported, omit the Python helper.
-
-## Recorded live run
-
-Validated on **vulture** at **2026-10-03T12:23:25Z**, using Terraform **1.16.4** and the signed Registry provider **0.9.0**. This is a sanitized excerpt of the actual console output: resource progress, tenant/resource identifiers, endpoint details and credentials are omitted. Summary lines are preserved verbatim. Both unchanged-plan commands exited `0`.
+A sanitized excerpt from the recorded live run:
 
 ```text
-$ terraform plan -out=create.tfplan
-Plan: 2 to add, 0 to change, 0 to destroy.
-
-$ terraform apply create.tfplan
 Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
-
-$ terraform plan -detailed-exitcode
-No changes. Your infrastructure matches the configuration.
-
-$ terraform plan -out=update.tfplan
-Plan: 0 to add, 2 to change, 0 to destroy.
-
-$ terraform apply update.tfplan
-Apply complete! Resources: 0 added, 2 changed, 0 destroyed.
-
-$ terraform apply -refresh-only -auto-approve
-No changes. Your infrastructure still matches the configuration.
-Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
-
-$ terraform plan -detailed-exitcode
-No changes. Your infrastructure matches the configuration.
-
-$ terraform destroy -auto-approve
-Plan: 0 to add, 0 to change, 2 to destroy.
-Destroy complete! Resources: 2 destroyed.
-```
-
-Output values recorded after the update (identifiers replaced with placeholders):
-
-```text
 Outputs:
 
 prompt_set_id = "<prompt-set-id>"
 target_id = "<target-id>"
 ```
 
-Both resource identities stayed stable through the description updates. Independent cleanup reads returned HTTP 404 for the disposable target and `active = false` for the prompt set. The archived prompt-set record remains in AIRS. The original target remained active.
+## Prepare an assessment
 
-No prompts were uploaded and no assessment or inference request was executed during validation. The recorded run proves the target/prompt-set configuration lifecycle.
+Find the new target using `target_id` in Prisma AIRS and validate its connectivity and response parsing. Add attack prompts to the named custom prompt set through the console or CLI, then select the target and prompts for your assessment.
 
-[Provider workflow](https://cdot65.github.io/terraform-provider-prisma-airs/guides/red-team-testing/) · [Repository validation](../../docs/validation.md)
+Provider 0.9.0 manages the prompt-set container; it does not populate its prompts. Applying Terraform does not validate endpoint connectivity or launch an assessment. The [Red Team workflow](https://cdot65.github.io/terraform-provider-prisma-airs/guides/red-team-testing/) explains these separate steps.
+
+## Make a change
+
+Edit `description_suffix` in your input file, then review and apply:
+
+```bash
+terraform plan -out=update.tfplan
+terraform apply update.tfplan
+```
+
+Description changes update the existing target and prompt-set metadata. If the application contract changes, update its templates and validate connectivity again before an assessment.
+
+## Clean up
+
+```bash
+terraform plan -destroy -out=destroy.tfplan
+terraform apply destroy.tfplan
+```
+
+Terraform deletes the owned target and archives the prompt set. An archived prompt-set record can remain visible in AIRS; the external application remains available.
+
+If target validation fails, check the endpoint, header JSON, placeholder placement, and response field. If management authentication fails, check the environment and Red Team roles.
+
+[Detailed live output and cleanup evidence](../../docs/live-runs/ai-red-teaming.md) · [Validation boundaries](../../docs/validation.md)

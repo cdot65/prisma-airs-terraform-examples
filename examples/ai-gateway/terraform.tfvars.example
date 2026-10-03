@@ -1,6 +1,9 @@
-name_prefix         = "example-gateway-demo"
-workspace_id        = "<existing-workspace-uuid>"
-provider_slug       = "<existing-provider-slug-without-at-sign>"
-model               = "<available-model-slug>"
-retry_attempts      = 1
-requests_per_minute = 100
+name_prefix = "tf-gateway-demo"
+workspace_id = "existing-workspace-uuid"
+upstreams = { openai = { ai_provider_id = "openai-provider-family-uuid" } }
+primary_upstream = "openai"
+# Replace with two models enabled on your integration.
+primary_model = "gpt-4o-mini"
+secondary_model = "gpt-4.1-mini"
+# Load TF_VAR_upstream_api_keys as JSON through your credential store.
+# Read platform.md before enabling optional resources.

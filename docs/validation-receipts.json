@@ -3,14 +3,49 @@
     "project": "ai-gateway",
     "provider": "0.9.0",
     "terraform": "1.16.4",
-    "validated_at": "2026-10-03T12:24:43Z",
+    "validated_at": "2026-10-03T15:15:02Z",
+    "created_resources": 26,
+    "gateway_resource_types": 15,
     "create_plan_empty": true,
     "update_plan_empty_after_refresh": true,
     "destroy_complete": true,
     "managed_state_empty": true,
     "configuration_normalized_sha256": {
-      "main.tf": "315ddd410143010984d3095a53b379a118d8f04dfac96bbb79a501c1b94264fc",
-      "variables.tf": "ce6e89ac19074b60aa11f4c9276fd61334e9ab97f518a9c864a55a66a6ba11ae"
+      "main.tf": "9b7acdc483de87b8c80adf18688f070c85d6d4cf0a46ba2c606b1dfcf2d330c6",
+      "outputs.tf": "10d377166940400b3b9a884b5bcef050b520f30a0a007c35158a1c24bf3f45a3",
+      "platform-variables.tf": "a043af8d8793c177fbfd34df2c69c060816fc06566bafa17d5c64d2907697e34",
+      "platform.tf": "707ce5a9f3fa915cea70712af33f1f7ba02732ee4419fdc8646e3ae90983fbd2",
+      "routing.tf": "1df84129bd58a49714a9b4a1263231345f6f2ad86e5e220ad97cff4339d12057",
+      "variables.tf": "7d79815a570a53ac2e042dff912923f667bd813cae1579e2c194b835bb24b44b"
+    },
+    "evidence": "live-runs/ai-gateway-expanded.md",
+    "runtime_checks": {
+      "inference": 200,
+      "marker_denial": 446,
+      "airs_injection_block": 446,
+      "conditional_both_targets": true,
+      "weighted_both_targets": true,
+      "cache_miss_then_hit": true,
+      "controlled_fallback_secondary": 200,
+      "request_limit_error": 429,
+      "usage_limit_error": 412,
+      "developer_key_inference": 200,
+      "mcp_discovery_and_invocation": true,
+      "explicit_org_guardrail_denial": 446
+    },
+    "boundaries": {
+      "external_secret_retrieval_tested": false,
+      "hybrid_installation_tested": false,
+      "independent_upstream_services_tested": false,
+      "automatic_org_enforcement_other_workspaces_tested": false
+    },
+    "api_cleanup_verified": true,
+    "existing_provider_active_after_cleanup": true,
+    "cleanup_outcomes": {
+      "absent": 21,
+      "archived": 1,
+      "parent absent": 3,
+      "absent (all revisions)": 1
     }
   },
   {

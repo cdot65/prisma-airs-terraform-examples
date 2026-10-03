@@ -1,100 +1,150 @@
-# AI Gateway
+# Get started with AI Gateway
 
-Create a versioned routing configuration that references an existing enabled Gateway provider, and a rate policy scoped to requests carrying the example's application metadata. Upstream credentials stay in the existing integration; the visible routing document contains only a provider reference.
+Build a governed AI application in an existing Gateway workspace. This project creates its upstream model connections, binds them to the workspace, configures routing and AIRS inspection, and gives your application a credential with request and token limits.
 
-| Object | Purpose |
-| --- | --- |
-| `prisma-airs_gateway_config.application` | Route to the selected provider/model with configurable retry attempts |
-| `prisma-airs_gateway_rate_limit.application` | Requests-per-minute limit selected by application metadata |
-| `data.prisma-airs_gateway_providers.workspace` | Read provider metadata from the workspace's first page |
+Four saved routing policies teach fallback/retry, weighted balancing, conditional routing, and simple caching. Optional features cover external secret references, developer keys, MCP, hybrid deployment registration, and organization guardrails in the same Terraform root.
 
-## Inputs and authentication
+## Before you start
 
-Supply shared `PANW_MGMT_*` credentials or use the tenant helper. The service account needs Gateway management access to the selected workspace.
+You need:
 
-| Input | Required | Default |
-| --- | --- | --- |
-| `name_prefix` | Yes; also the request `metadata.application` value | — |
-| `workspace_id` | Existing workspace UUID | — |
-| `provider_slug` | Enabled provider slug in that workspace, without `@` | — |
-| `model` | Model slug available through that provider | — |
-| `retry_attempts` | No | `1` |
-| `requests_per_minute` | No | `100` |
+- Terraform 1.9 or later, before 2.0. The root pins provider 0.9.0.
+- The three [management environment variables](../../README.md#get-started), with Gateway and Runtime Security management access.
+- An existing Gateway workspace UUID and a connected Gateway inference deployment.
+- Usable upstream credentials and two routing targets: different models, different services, or separate connections to the same service.
+- The tenant's **PANW Prisma AIRS plugin** configured with its inspection endpoint and Runtime Security API key. This project creates a dedicated security profile, but plugin administration is external. See [PANW plugin setup](https://docs.paloaltonetworks.com/prisma-airs/ai-gateway/ai-gateway-guardrails/configure-ai-runtime-api-guardrail).
 
-Fill these nonsecret values in `terraform.tfvars` from `terraform.tfvars.example`, or export their `TF_VAR_*` variables. Find the workspace and enabled provider/model in your Gateway environment. Workspace/IAM and provider/integration provisioning are prerequisites and are not managed by this example.
+Your inference endpoint differs from Terraform's management API endpoints. Copy the inference base URL from your deployment, including `/v1`. Optional capabilities have additional prerequisites in [platform.md](platform.md).
 
-To select this rate policy during a later inference call, include `metadata.application` equal to `name_prefix` in the request. The example does not set a tenant default, issue a service key, deploy a Gateway, or generate inference traffic. The provider data source reads one page; `provider_count_on_first_page` is not the tenant's complete provider inventory.
-
-## Execute
-
-From this directory, after setting the existing workspace, provider and model:
+## Configure your application
 
 ```bash
-export TF_VAR_name_prefix="tf-gateway-$(date -u +%Y%m%d%H%M%S)"
+cp terraform.tfvars.example terraform.tfvars
+```
+
+Edit the nonsecret input file:
+
+| Input | What to supply |
+| --- | --- |
+| `name_prefix` | An unused lowercase prefix, 3–40 characters; keep it stable |
+| `workspace_id` | Existing workspace UUID |
+| `upstreams` | Named connections with provider-family UUIDs from the catalog |
+| `primary_upstream` | Name of the primary connection |
+| `primary_model` | Primary model enabled on that connection |
+| `secondary_model` | Second model on the same service by default |
+| `secondary_upstream` | Optional different connection for the second model |
+
+For discovery, use SCM or these AIRS CLI commands with your tenant selected:
+
+```bash
+airs cli aigateway workspaces list
+airs cli aigateway integrations providers
+```
+
+Load `TF_VAR_upstream_api_keys` from your credential store as a JSON map keyed by the names in `upstreams`. Each connection needs its own value, even if two connections use the same account. Do not store this map in `terraform.tfvars`. For the sample `openai` connection, the environment variable contains this JSON shape (replace the placeholder through your credential store):
+
+```json
+{"openai": "<upstream-api-key>"}
+```
+
+For an OpenAI-compatible custom service, load `TF_VAR_upstream_configurations` as a JSON map containing its `provider_auth_type = "apiKey"` and `custom_host` settings. The [provider connection guide](https://cdot65.github.io/prisma-airs-sdk/guides/ai-gateway-api/) describes this contract. These settings are sensitive because provider-specific configurations can contain credentials. Its environment JSON shape is:
+
+```json
+{"openai": {"provider_auth_type": "apiKey", "custom_host": "https://YOUR-MODEL-SERVICE/v1"}}
+```
+
+For the standard OpenAI service, leave `upstream_configurations` at its empty default.
+
+## Apply
+
+```bash
 terraform init
-terraform validate
-python3 ../../scripts/with-tenant.py vulture terraform plan -out=create.tfplan
-python3 ../../scripts/with-tenant.py vulture terraform apply create.tfplan
-python3 ../../scripts/with-tenant.py vulture terraform plan -detailed-exitcode
-
-export TF_VAR_retry_attempts=2
-export TF_VAR_requests_per_minute=120
-python3 ../../scripts/with-tenant.py vulture terraform plan -out=update.tfplan
-python3 ../../scripts/with-tenant.py vulture terraform apply update.tfplan
-python3 ../../scripts/with-tenant.py vulture terraform apply -refresh-only
-python3 ../../scripts/with-tenant.py vulture terraform plan -detailed-exitcode
-
-python3 ../../scripts/with-tenant.py vulture terraform destroy
-python3 ../../scripts/with-tenant.py vulture terraform state list
+terraform plan -out=create.tfplan
+terraform apply create.tfplan
+terraform output routing
 ```
 
-An unchanged plan exits `0`; `2` means proposed changes; `1` means an error. With credentials already exported, omit the Python helper.
+With one upstream and optional features disabled, the root creates **16 resources**: an integration/binding/provider chain, one Runtime Security profile, two guardrails, four routing configs, four application keys, and two usage policies. Each additional upstream adds three resources.
 
-## Recorded live run
+`routing` reports each policy's IDs and version. `application_keys` holds the four sensitive, one-time application credentials; the request helpers read these from state without printing them. Protect state and saved plans. Every key selects its saved config and disallows config overrides.
 
-Validated on **vulture** at **2026-10-03T12:24:43Z**, using Terraform **1.16.4** and the signed Registry provider **0.9.0**. This is a sanitized excerpt of the actual console output: resource progress, tenant/resource identifiers, endpoint details and credentials are omitted. Summary lines are preserved verbatim. Both unchanged-plan commands exited `0`.
+Model enablement and custom-model registration are outside provider 0.9.0. Check model access in SCM after creating an integration, and enable/register models there where your provider requires it. A successful apply does not establish upstream connectivity.
+
+## Send your first request
+
+Set your actual HTTPS inference base URL in the environment:
+
+```bash
+export PANW_AI_GW_INFERENCE_ENDPOINT="https://YOUR-GATEWAY/v1"
+python3 demo.py --mode fallback
+```
+
+The helper sends an OpenAI-compatible chat request using the fallback application key and this example's application metadata. It bounds output to 32 tokens and prints HTTP status, returned model, and cache status. Python 3 and Terraform on PATH are required. It performs no automatic retries.
+
+A successful request must return HTTP 200 with model text. Authentication, missing models, unavailable upstreams, and AIRS plugin errors are failures; check Gateway request logs rather than treating a configured resource as proof of a callable application.
+
+Demonstrate the two security controls:
+
+```bash
+python3 demo.py --deny
+python3 demo.py --attack
+```
+
+The first sends `AIRS_DEMO_BLOCK` and verifies that the **contains check** denied it. The second sends a controlled injection probe and requires an AIRS result reporting injection detection and a block. Both checks distinguish an actual guardrail verdict from authentication, provider, or plugin errors.
+
+Sanitized live output recorded for these controls:
 
 ```text
-$ terraform plan -out=create.tfplan
-Plan: 2 to add, 0 to change, 0 to destroy.
-
-$ terraform apply create.tfplan
-Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
-
-$ terraform plan -detailed-exitcode
-No changes. Your infrastructure matches the configuration.
-
-$ terraform plan -out=update.tfplan
-Plan: 0 to add, 2 to change, 0 to destroy.
-
-$ terraform apply update.tfplan
-Apply complete! Resources: 0 added, 2 changed, 0 destroyed.
-
-$ terraform apply -refresh-only -auto-approve
-No changes. Your infrastructure still matches the configuration.
-Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
-
-$ terraform plan -detailed-exitcode
-No changes. Your infrastructure matches the configuration.
-
-$ terraform destroy -auto-approve
-Plan: 0 to add, 0 to change, 2 to destroy.
-Destroy complete! Resources: 2 destroyed.
+fallback: default.contains denied probe (HTTP 446)
+fallback: panw-prisma-airs.intercept denied probe (HTTP 446)
 ```
 
-Output values recorded after the update (identifiers replaced with placeholders):
+See [current run evidence](../../docs/live-runs/ai-gateway-expanded.md) for the configuration and request behaviors actually tested. The [earlier two-resource run](../../docs/live-runs/ai-gateway.md) is historical evidence for the original basic example.
 
-```text
-Outputs:
+## Explore routing
 
-config_id = "<config-id>"
-config_version_id = "<config-version-id>"
-provider_count_on_first_page = 2
-rate_limit_id = "<rate-limit-id>"
+| Policy | Commands | What to observe |
+| --- | --- | --- |
+| Fallback/retry | `python3 demo.py --mode fallback` | Ordered targets; healthy traffic alone does not exercise failover |
+| Weighted balancing | `python3 demo.py --mode balanced --repeat 12` | Distribution in Gateway request logs; a small random sample cannot prove an exact ratio |
+| Conditional | `python3 demo.py --mode conditional --tier standard`, then `--tier premium` | Standard selects primary; premium selects secondary |
+| Simple cache | `python3 demo.py --mode cached --repeat 2` | Repeat the identical request and check a cache-hit header or Gateway logs |
+
+The first successful fallback request proves connectivity. To demonstrate a failover, use a disposable primary upstream that returns one of the configured retry/fallback status codes while the secondary remains healthy; do not disrupt a shared connection. Semantic caching is not configured by this project.
+
+The default request limit is 100 requests/minute and the monthly token budget is 100,000, matched by `metadata.application`. Edit `requests_per_minute` or `token_budget`, review a plan, and apply it to explore enforcement. Terraform does not reset accumulated usage. Keep requests carrying the application metadata; these policies match that metadata, not arbitrary workspace traffic.
+
+See [routing and policy lessons](routing-lessons.md) for a controlled failover and enforcement exercises. Request metadata is caller-supplied: these examples demonstrate policies matched to that metadata, rather than a tamper-proof application identity.
+
+## Make a change and clean up
+
+Edit `description_suffix`, `retry_attempts`, `primary_weight`, or the policy thresholds:
+
+```bash
+terraform plan -out=update.tfplan
+terraform apply update.tfplan
 ```
 
-The provider metadata source returned **2 providers on its first page**. The routing configuration retained its resource ID while receiving a new `version_id`. The rate policy retained its ID and changed from 100 to 120 requests per minute. Post-destroy GETs returned HTTP 404 for both owned objects; the existing provider remained active.
+Routing document changes preserve the config ID and advance its version. Terraform sends the complete routing document, including hooks.
 
-This verifies declarative configuration management. No upstream connectivity, actual rate enforcement or inference behavior was tested.
+Remove the example using the same tenant, inputs, and state:
 
-[Provider workflow](https://cdot65.github.io/terraform-provider-prisma-airs/guides/gateway-workflow/) · [Repository validation](../../docs/validation.md)
+```bash
+terraform plan -destroy -out=destroy.tfplan
+terraform apply destroy.tfplan
+```
+
+Destroy removes the owned keys, controls, providers, and integration bindings. It deletes all revisions of the owned Runtime profile. Hybrid registrations are archived. External workspaces, model services, tenant plugin settings, and secret-store contents remain prerequisites.
+
+## Troubleshooting
+
+| Symptom | Check |
+| --- | --- |
+| Management 401/403 | OAuth variables, TSG ID, Gateway/Runtime roles and entitlements |
+| Apply succeeds but inference fails | Connected deployment, upstream credential, model enablement, and custom-host reachability |
+| New config is not visible yet | Wait at least a minute for data-plane propagation, then inspect request logs |
+| AIRS check errors | Tenant plugin endpoint/key and access to the created security profile |
+| Unexpected request policy behavior | Application metadata, aggregation window, and accumulated token usage |
+| Optional feature fails | Its prerequisites and supported ownership boundary in [platform.md](platform.md) |
+
+[Provider Gateway workflow](https://cdot65.github.io/terraform-provider-prisma-airs/guides/gateway-workflow/) · [Validation details](../../docs/validation.md)

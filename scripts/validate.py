@@ -18,6 +18,7 @@ def main():
             cwd=example, check=True,
         )
         subprocess.run(["terraform", "validate", "-no-color"], cwd=example, check=True)
+    subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", "tests"], cwd=root, check=True)
 
 
 if __name__ == "__main__":

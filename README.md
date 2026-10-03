@@ -1,66 +1,76 @@
 # Prisma AIRS Terraform Examples
 
-Working Terraform projects for declaratively configuring Prisma AIRS with the [Prisma AIRS provider](https://registry.terraform.io/providers/cdot65/prisma-airs/latest). Each product has an independent Terraform root, its own state, execution instructions, and output recorded from a live validation run.
+Configure Prisma AIRS with ready-to-run Terraform projects using the [Prisma AIRS provider](https://registry.terraform.io/providers/cdot65/prisma-airs/latest). Choose a product, supply your environment credentials, and follow its guide from your first plan through cleanup.
 
-| Product | Project | Configuration |
-| --- | --- | --- |
-| AI Runtime Security | [ai-runtime-security](examples/ai-runtime-security/) | Confidential-information topic and application security profile |
-| AI Red Teaming | [ai-red-teaming](examples/ai-red-teaming/) | Authenticated application target and custom prompt-set container |
-| AI Gateway | [ai-gateway](examples/ai-gateway/) | Routing through an existing provider and an application-scoped rate policy |
-| AI Supply Chain Security | [ai-supply-chain-security](examples/ai-supply-chain-security/) | Model Security group and security-rule discovery |
+| Start here | What you build |
+| --- | --- |
+| [AI Runtime Security](examples/ai-runtime-security/README.md) | A confidential-information topic and an application security profile |
+| [AI Red Teaming](examples/ai-red-teaming/README.md) | An authenticated application target and custom prompt-set container |
+| [AI Gateway](examples/ai-gateway/README.md) | Owned model connections, four routing lessons, AIRS guardrails, application keys, request/token policies, and optional platform capabilities |
+| [AI Supply Chain Security](examples/ai-supply-chain-security/README.md) | A Model Security group and security-rule discovery |
 
-The four projects pin the signed, publicly installable provider **0.9.0** and were validated on **vulture** with Terraform **1.16.4**. Validation covers create, update, refresh, empty plans, and destroy. The READMEs contain sanitized excerpts from those actual runs. [Validation details](docs/validation.md) define the evidence and cleanup behavior.
+Each directory is an independent Terraform root with its own state. Start with one product; you do not need to apply all four. The examples pin provider **0.9.0**. Gateway requires Terraform **1.9 or later**; the other roots require **1.8 or later**. All require Terraform before 2.0.
 
-Skill Scanning additions are being prepared against the upcoming provider release. They will be incorporated into the Supply Chain project after that provider is published and the example passes validation with its released binary. The existing project uses published Model Security functionality.
+## Get started
 
-## Prerequisites
+Install Terraform and obtain a Prisma AIRS service account with access to your chosen product. Clone this repository:
 
-- Terraform 1.8 or later, before 2.0; the recorded runs used 1.16.4.
-- A Prisma AIRS service account with roles and entitlement for the chosen product.
-- The existing workspace/provider or target endpoint described in the product README.
-- Python 3 and the AIRS CLI if using the optional tenant credential helper.
+```bash
+git clone https://github.com/cdot65/prisma-airs-terraform-examples.git
+cd prisma-airs-terraform-examples
+```
 
-## Environment-based authentication
+Load these variables from your credential store into the shell that runs Terraform:
 
-The provider reads these variables; credentials are never configured in HCL:
-
-| Variable | Value |
+| Environment variable | Value |
 | --- | --- |
 | `PANW_MGMT_CLIENT_ID` | Service-account OAuth client ID |
 | `PANW_MGMT_CLIENT_SECRET` | Service-account OAuth client secret |
 | `PANW_MGMT_TSG_ID` | Tenant Service Group ID |
 
-Load them into the current process from your credential store, then use Terraform normally. All projects contain an empty provider block and inherit the shared identity.
+The provider uses these variables through its empty provider block. Terraform does not automatically load `.env` files. Product guides describe any additional application credentials, such as an upstream model key or target authentication headers. Keep those credentials in environment variables too.
 
-If the tenant is registered in the AIRS CLI, the optional helper reads its linked JSON and passes those three values only through the child process environment:
+For example, to create a Runtime Security policy:
+
+```bash
+cd examples/ai-runtime-security
+cp terraform.tfvars.example terraform.tfvars
+# Edit terraform.tfvars: choose a unique name_prefix.
+terraform init
+terraform plan -out=create.tfplan
+terraform apply create.tfplan
+terraform output
+```
+
+Read the [Runtime Security guide](examples/ai-runtime-security/README.md) for the policy's purpose, outputs, and next steps. For a different product, start from its guide and fill its own prerequisites before planning.
+
+After exploring an example, remove its resources from the same directory with the same tenant credentials and inputs:
+
+```bash
+terraform plan -destroy -out=destroy.tfplan
+terraform apply destroy.tfplan
+```
+
+State and saved plans can contain secrets even when Terraform hides console output. They are excluded from Git; protect them locally or use an access-controlled encrypted remote backend. Do not change tenants while reusing the same state.
+
+## Optional AIRS CLI credential helper
+
+If your tenant is already registered with the AIRS CLI, Python 3 and the helper can load the linked management credentials into a child process:
 
 ```bash
 airs cli tenant list
-python3 scripts/with-tenant.py vulture terraform -chdir=examples/ai-runtime-security init
+# Replace YOUR_TENANT with the registered name; run from the repository root.
+python3 scripts/with-tenant.py YOUR_TENANT terraform -chdir=examples/ai-runtime-security plan
 ```
 
-The helper does not switch the selected CLI tenant, print credentials, or create a `.env` file. It disables provider debug logging for that child process. It reads `mgmtClientId`, `mgmtClientSecret`, and `mgmtTsgId` from the registered JSON.
+The helper reads `mgmtClientId`, `mgmtClientSecret`, and `mgmtTsgId` from the linked JSON, without switching the selected CLI tenant or printing credentials. It does not supply upstream model keys or target credentials. Normal Terraform commands remain the main workflow when your environment is already configured.
 
-## Run an example
+## Explore and contribute
 
-From the repository root, choose a unique resource prefix and set the product-specific inputs from its README:
+Examples create their own named configuration and reference externally provisioned workspaces, application endpoints, and tenant integrations where documented. Gateway creates its upstream connections and bindings; its optional organization policy is organization-scoped and explicitly attached to the owned configurations. Read its [platform guide](examples/ai-gateway/platform.md) before enabling optional features. [Resource ownership](docs/adr/0001-example-resource-ownership.md) explains cleanup boundaries.
 
-```bash
-export TF_VAR_name_prefix="tf-demo-$(date -u +%Y%m%d%H%M%S)"
-python3 scripts/with-tenant.py vulture terraform -chdir=examples/ai-runtime-security init
-python3 scripts/with-tenant.py vulture terraform -chdir=examples/ai-runtime-security validate
-python3 scripts/with-tenant.py vulture terraform -chdir=examples/ai-runtime-security plan -out=create.tfplan
-python3 scripts/with-tenant.py vulture terraform -chdir=examples/ai-runtime-security apply create.tfplan
-```
+Run `python3 scripts/validate.py` to check formatting, Registry installation, provider schema validation, and request-helper tests without tenant credentials. An optional [GitHub Actions template](ci/README.md) runs those checks in CI. Recorded live results and their limits are in [validation documentation](docs/validation.md); short sanitized output excerpts appear in the guides.
 
-Review saved plans before applying. To clean up, run the corresponding `terraform destroy` with the same tenant, directory and inputs. Each product README gives a complete local workflow including updates and cleanup.
+Supply Chain Skill Scanning coverage will be added after the supporting provider release is published and validated. The current released example uses Model Security.
 
-Each project includes `terraform.tfvars.example` for nonsecret inputs. Copy it to `terraform.tfvars` and replace its placeholders, or use the documented `TF_VAR_*` environment variables. Keep connection credentials in environment variables. State and saved plans can contain sensitive values even when console output hides them; both are excluded from Git.
-
-## Checks and ownership
-
-Run `python3 scripts/validate.py` to check formatting, provider installation from the Registry, and configuration validation without tenant credentials. Live validation is recorded separately. An [Actions workflow template](ci/validate.yml) runs the same checks in CI; [installation instructions](ci/README.md) explain how to enable it.
-
-Examples own uniquely named disposable resources. Workspaces, upstream integrations, target applications and existing tenant policy remain external prerequisites. Destroy affects only objects created by the example, subject to the API's archival/tombstone behavior. [Ownership decision](docs/adr/0001-example-resource-ownership.md) explains this boundary.
-
-See [GLOSSARY.md](GLOSSARY.md) for product terminology. This repository uses the MIT license and is a community example repository.
+See the [glossary](GLOSSARY.md) for product terminology. This community repository uses the MIT license.
