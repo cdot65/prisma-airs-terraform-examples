@@ -55,6 +55,15 @@ An unchanged plan exits `0`; `2` means proposed changes; `1` means an error. Wit
 
 Validated on **vulture** at **2026-10-03T12:23:25Z**, using Terraform **1.16.4** and the signed Registry provider **0.9.0**. This is a sanitized excerpt of the actual console output: resource progress, tenant/resource identifiers, endpoint details and credentials are omitted. Summary lines are preserved verbatim. Both unchanged-plan commands exited `0`.
 
+```
+
+Output values recorded after the update (identifiers replaced with placeholders):
+
+```text
+Outputs:
+
+prompt_set_id = "<prompt-set-id>"
+target_id = "<target-id>"
 ```text
 $ terraform plan -out=create.tfplan
 Plan: 2 to add, 0 to change, 0 to destroy.
