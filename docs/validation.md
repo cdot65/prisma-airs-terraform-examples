@@ -31,6 +31,12 @@ Public excerpts omit progress details and replace identifiers, endpoints, and mo
 
 `python3 scripts/validate.py` checks formatting, locked provider installation, schema validation for all four projects, and request-helper tests without tenant access or remote writes. The optional CI template performs these checks; it does not reproduce live lifecycle evidence.
 
+## Post-review MCP regression check
+
+Independent review of head `a15fef5` identified per-line JSON parsing in SSE responses. The decoder now joins data fields within each complete event before parsing JSON. Six offline regression tests cover multiline initialization/discovery/invocation, SSE line endings and BOM, event boundaries, errors, plain JSON compatibility, and incomplete/malformed events. Together with the existing helper tests, 13 tests pass. The [SSE parsing standard](https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream) defines the event framing.
+
+This correction changes Python response parsing only. Terraform configuration and live source-hash receipts remain unchanged; regression validation requires no tenant credentials or live API writes.
+
 ## Skill Scanning release dependency
 
 The Supply Chain extension was separately validated against a local snapshot of ongoing provider Skill Scanning work using published Go SDK 0.7.0. It created a model group and synthetic fingerprint override, replaced the override after a reason change, refreshed with an empty plan, and destroyed both fixtures. Independent checks confirmed the group tombstone and absence of the synthetic fingerprint override.

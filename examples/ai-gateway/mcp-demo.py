@@ -11,14 +11,24 @@ from demo import NoRedirect, output
 
 
 def decode(raw):
-    text = raw.decode()
+    text = raw.decode('utf-8-sig')
     if text.lstrip().startswith('{'):
         return json.loads(text)
-    for line in text.splitlines():
-        if line.startswith('data:'):
-            value = json.loads(line[5:].strip())
-            if 'result' in value or 'error' in value:
-                return value
+    data = []
+    # SSE dispatches at a blank line, joining data fields with newlines.
+    # Normalize only SSE line endings; discard an unfinished event at EOF.
+    for line in text.replace('\r\n', '\n').replace('\r', '\n').split('\n')[:-1]:
+        if not line:
+            payload = '\n'.join(data)
+            data = []
+            if payload:
+                value = json.loads(payload)
+                if isinstance(value, dict) and ('result' in value or 'error' in value):
+                    return value
+        else:
+            field, _, value = line.partition(':')
+            if field == 'data':
+                data.append(value.removeprefix(' '))
     return {}
 
 
