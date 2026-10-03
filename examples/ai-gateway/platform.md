@@ -64,7 +64,7 @@ enable_deployment_registration = true
 
 This creates a `non_production` registration with `is_default = false`. Optional native settings can be supplied through sensitive `TF_VAR_deployment_config` and `TF_VAR_deployment_auth_settings`. `deployment_credentials` contains sensitive one-time credentials for external deployment setup.
 
-The resource does not install containers, Helm charts, Kubernetes infrastructure, or networking. It does not connect the deployment, attach workspaces, or rotate authentication. Follow [deployment setup](https://docs.paloaltonetworks.com/prisma-airs/ai-gateway/configure-ai-gateway) separately. Destroy archives the registration; its record can remain visible.
+The resource does not install containers, Helm charts, Kubernetes infrastructure, or networking. It does not connect the deployment, attach workspaces, or rotate authentication. Follow [deployment setup](https://docs.paloaltonetworks.com/prisma-airs/ai-gateway/configure-ai-gateway-hybrid) separately. Destroy archives the registration; its record can remain visible.
 
 ## Organization guardrail
 
