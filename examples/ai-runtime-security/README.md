@@ -1,93 +1,69 @@
-# AI Runtime Security
+# Get started with AI Runtime Security
 
-Configure an application policy that blocks prompt injection and detects a custom topic for confidential business information. Terraform creates the topic first and passes its name into the profile; the provider resolves the topic reference.
+Create an application policy that blocks prompt injection and detects confidential business information. Terraform creates a custom topic and a security profile that references it.
 
-| Managed object | Purpose |
-| --- | --- |
-| `prisma-airs_runtime_custom_topic.confidential` | Examples and description for confidential-information detection |
-| `prisma-airs_runtime_security_profile.application` | Prompt-injection protection and a configurable topic action |
+## Before you start
 
-## Inputs and authentication
+Install Terraform 1.8 or later, before 2.0, and load the three [management environment variables](../../README.md#get-started). Your service account needs Runtime Security management access. This project uses provider 0.9.0 and needs no existing application endpoint.
 
-Use the shared `PANW_MGMT_CLIENT_ID`, `PANW_MGMT_CLIENT_SECRET`, and `PANW_MGMT_TSG_ID` environment variables, or the tenant helper below. The service account needs Runtime Security management access.
+## Configure and apply
 
-| Input | Required | Default |
-| --- | --- | --- |
-| `name_prefix` | Yes; unique, previously unused | — |
-| `description_suffix` | No | `initial` |
-| `topic_action` | No | `block`; also accepts `allow` |
-
-`terraform.tfvars.example` contains only nonsecret inputs. Keep the prefix unchanged during the update: renaming a profile creates a new logical profile and preserves the previous name outside the current resource address.
-
-## Execute
-
-Run from this directory:
+From this directory:
 
 ```bash
-export TF_VAR_name_prefix="tf-runtime-$(date -u +%Y%m%d%H%M%S)"
+cp terraform.tfvars.example terraform.tfvars
+```
+
+Edit the file and choose a unique, unused `name_prefix`, such as `tf-runtime-yourname`. Leave `topic_action = "block"` for the initial policy. Credentials belong in the environment, not this file.
+
+| Input | Purpose | Default |
+| --- | --- | --- |
+| `name_prefix` | Names your owned topic and profile | Required |
+| `topic_action` | Action for confidential-information matches | `block` |
+| `description_suffix` | Editable topic annotation | `initial` |
+
+```bash
 terraform init
-terraform validate
-python3 ../../scripts/with-tenant.py vulture terraform plan -out=create.tfplan
-python3 ../../scripts/with-tenant.py vulture terraform apply create.tfplan
-python3 ../../scripts/with-tenant.py vulture terraform plan -detailed-exitcode
-
-# Change a topic annotation and its action in the profile.
-export TF_VAR_description_suffix=updated
-export TF_VAR_topic_action=allow
-python3 ../../scripts/with-tenant.py vulture terraform plan -out=update.tfplan
-python3 ../../scripts/with-tenant.py vulture terraform apply update.tfplan
-python3 ../../scripts/with-tenant.py vulture terraform apply -refresh-only
-python3 ../../scripts/with-tenant.py vulture terraform plan -detailed-exitcode
-
-python3 ../../scripts/with-tenant.py vulture terraform destroy
-python3 ../../scripts/with-tenant.py vulture terraform state list
+terraform plan -out=create.tfplan
+terraform apply create.tfplan
+terraform output
 ```
 
-An unchanged plan exits `0`; `2` means Terraform proposes changes; `1` means an error. If credentials are already loaded into your environment, use the same commands without the Python helper.
-
-## Recorded live run
-
-Validated on **vulture** at **2026-10-03T12:23:04Z**, using Terraform **1.16.4** and the signed Registry provider **0.9.0**. This is a sanitized excerpt of the actual console output: resource progress, tenant/resource identifiers, endpoint details and credentials are omitted. Summary lines are preserved verbatim. Both unchanged-plan commands exited `0`.
+A sanitized excerpt from the recorded live run:
 
 ```text
-$ terraform plan -out=create.tfplan
-Plan: 2 to add, 0 to change, 0 to destroy.
-
-$ terraform apply create.tfplan
 Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
-
-$ terraform plan -detailed-exitcode
-No changes. Your infrastructure matches the configuration.
-
-$ terraform plan -out=update.tfplan
-Plan: 0 to add, 2 to change, 0 to destroy.
-
-$ terraform apply update.tfplan
-Apply complete! Resources: 0 added, 2 changed, 0 destroyed.
-
-$ terraform apply -refresh-only -auto-approve
-Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
-
-$ terraform plan -detailed-exitcode
-No changes. Your infrastructure matches the configuration.
-
-$ terraform destroy -auto-approve
-Plan: 0 to add, 0 to change, 2 to destroy.
-Destroy complete! Resources: 2 destroyed.
 ```
 
-Output values recorded after the update (identifiers replaced with placeholders):
+Terraform outputs the topic ID, current profile revision ID, and revision number. The profile is named `<name_prefix>-application-policy`; a new profile starts at revision 1.
 
-```text
-Outputs:
+## Use the policy
 
-profile_id = "<profile-revision-id>"
-profile_revision = 2
-topic_id = "<topic-id>"
+Open the created profile in Prisma AIRS to inspect prompt-injection and topic protection. When integrating the Runtime Security Scan API with your application, select this profile by name. Application scan requests need a separate Runtime Security API key; the management OAuth variables used by Terraform do not authenticate those requests.
+
+Applying this project configures the policy. It does not send content for inspection. Follow the [security-profile workflow](https://cdot65.github.io/terraform-provider-prisma-airs/guides/managing-security-profiles/) to connect the profile to your application.
+
+## Make a change
+
+Edit `description_suffix` to annotate the topic, or change `topic_action` to explore an alternative policy action. Review and apply the resulting change:
+
+```bash
+terraform plan -out=update.tfplan
+terraform apply update.tfplan
+terraform output
 ```
 
-The live update advanced the profile from revision 1 to revision 2 at the same Terraform address. The profile revision UUID changed as expected; the topic retained its identity. No scan request was executed. This proves configuration management, rather than the effectiveness of the policy against a particular prompt.
+A policy change can create a new profile revision. Keep `name_prefix` stable: renaming a profile creates another logical profile and preserves the old name outside this resource address.
 
-Destroy deletes every revision under the managed profile name. Complete post-destroy profile and topic inventories confirmed that both owned names were absent. Use a fresh prefix and do not import an existing production profile into this disposable example.
+## Clean up
 
-[Provider workflow](https://cdot65.github.io/terraform-provider-prisma-airs/guides/managing-security-profiles/) · [Repository validation](../../docs/validation.md)
+```bash
+terraform plan -destroy -out=destroy.tfplan
+terraform apply destroy.tfplan
+```
+
+Destroy deletes the owned custom topic and every revision under the managed profile name. Use a fresh prefix for this example and keep its state until cleanup finishes.
+
+If authentication fails, check the environment and service-account roles. If Terraform reports a name collision, choose an unused prefix before the first apply.
+
+[Detailed live output and cleanup evidence](../../docs/live-runs/ai-runtime-security.md) · [Validation boundaries](../../docs/validation.md)

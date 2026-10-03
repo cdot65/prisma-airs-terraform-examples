@@ -1,35 +1,92 @@
 terraform {
-  required_version = ">= 1.8.0, < 2.0.0"
+  required_version = ">= 1.9.0, < 2.0.0"
   required_providers {
-    prisma-airs = {
-      source  = "cdot65/prisma-airs"
-      version = "= 0.9.0"
+    prisma-airs = { source = "cdot65/prisma-airs", version = "= 0.9.0" }
+  }
+}
+provider "prisma-airs" {}
+
+resource "prisma-airs_gateway_integration" "models" {
+  for_each       = var.upstreams
+  name           = "${var.name_prefix}-${each.key}-integration"
+  description    = "Owned application connection (${var.description_suffix})."
+  ai_provider_id = each.value.ai_provider_id
+  key            = each.key == var.secret_for_upstream ? null : var.upstream_api_keys[each.key]
+  configurations = lookup(var.upstream_configurations, each.key, {})
+  secret_mappings = each.key == var.secret_for_upstream ? [{
+    target_field = "key", secret_reference_id = prisma-airs_gateway_secret_reference.upstream[0].id
+  }] : []
+}
+resource "prisma-airs_gateway_integration_workspace_binding" "models" {
+  for_each       = var.upstreams
+  integration_id = prisma-airs_gateway_integration.models[each.key].id
+  workspace_id   = var.workspace_id
+}
+resource "prisma-airs_gateway_provider" "models" {
+  for_each       = var.upstreams
+  name           = "${var.name_prefix}-${each.key}-provider"
+  integration_id = prisma-airs_gateway_integration.models[each.key].id
+  workspace_id   = var.workspace_id
+  depends_on     = [prisma-airs_gateway_integration_workspace_binding.models]
+}
+resource "prisma-airs_runtime_security_profile" "gateway" {
+  profile_name = "${var.name_prefix}-gateway-policy"
+  ai_security_profile {
+    model_type = "default"
+    model_protection {
+      name   = "prompt-injection"
+      action = "block"
     }
   }
 }
-
-provider "prisma-airs" {}
-
-data "prisma-airs_gateway_providers" "workspace" {
-  workspace_id = var.workspace_id
-  page_size    = 100
-  current_page = 1
-}
-
-resource "prisma-airs_gateway_config" "application" {
-  name         = "${var.name_prefix}-application-routing"
-  workspace_id = var.workspace_id
-  config = {
-    targets = [{
-      provider        = "@${var.provider_slug}"
-      override_params = { model = var.model }
-    }]
-    retry = { attempts = var.retry_attempts }
+locals {
+  deny_actions = {
+    deny       = true
+    async      = false
+    on_success = { feedback = { value = 1, weight = 1, metadata = "" } }
+    on_fail    = { feedback = { value = -1, weight = 1, metadata = "" } }
   }
 }
-
+resource "prisma-airs_gateway_guardrail" "marker" {
+  name             = "${var.name_prefix}-deny-marker"
+  workspace_id     = var.workspace_id
+  checks           = [{ id = "default.contains", is_enabled = true }]
+  check_parameters = { "default.contains" = { operator = "none", words = ["AIRS_DEMO_BLOCK"] } }
+  actions          = local.deny_actions
+}
+resource "prisma-airs_gateway_guardrail" "airs" {
+  name         = "${var.name_prefix}-airs-inspection"
+  workspace_id = var.workspace_id
+  checks       = [{ id = "panw-prisma-airs.intercept", is_enabled = true }]
+  check_parameters = { "panw-prisma-airs.intercept" = {
+    profile_name = prisma-airs_runtime_security_profile.gateway.profile_name
+  } }
+  actions = local.deny_actions
+}
+resource "prisma-airs_gateway_config" "routing" {
+  for_each     = local.routing_configs
+  name         = "${var.name_prefix}-${each.key}"
+  workspace_id = var.workspace_id
+  config = merge(each.value, {
+    before_request_hooks = concat([
+      { id = prisma-airs_gateway_guardrail.marker.slug },
+      { id = prisma-airs_gateway_guardrail.airs.slug },
+    ], var.enable_org_guardrail ? [{ id = prisma-airs_gateway_org_guardrail.baseline[0].slug }] : [])
+  })
+}
+resource "prisma-airs_gateway_service_api_key" "application" {
+  for_each     = local.routing_configs
+  name         = "${var.name_prefix}-${each.key}-key"
+  workspace_id = var.workspace_id
+  scopes       = var.enable_mcp ? ["completions.write", "mcp.invoke"] : ["completions.write"]
+  defaults = {
+    config_id             = prisma-airs_gateway_config.routing[each.key].id
+    allow_config_override = false
+    metadata              = { application = var.name_prefix }
+  }
+}
 resource "prisma-airs_gateway_rate_limit" "application" {
-  name         = "${var.name_prefix}-application-rate-limit"
+  name         = "${var.name_prefix}-request-limit"
   workspace_id = var.workspace_id
   type         = "requests"
   unit         = "rpm"
@@ -38,19 +95,13 @@ resource "prisma-airs_gateway_rate_limit" "application" {
   conditions   = [{ key = "metadata.application", value = var.name_prefix }]
   group_by     = [{ key = "metadata.application" }]
 }
-
-output "config_id" {
-  value = prisma-airs_gateway_config.application.id
-}
-
-output "config_version_id" {
-  value = prisma-airs_gateway_config.application.version_id
-}
-
-output "rate_limit_id" {
-  value = prisma-airs_gateway_rate_limit.application.id
-}
-
-output "provider_count_on_first_page" {
-  value = length(data.prisma-airs_gateway_providers.workspace.items)
+resource "prisma-airs_gateway_usage_limit" "application" {
+  name            = "${var.name_prefix}-token-budget"
+  workspace_id    = var.workspace_id
+  type            = "tokens"
+  credit_limit    = var.token_budget
+  alert_threshold = max(1, floor(var.token_budget * 0.2))
+  periodic_reset  = "monthly"
+  conditions      = [{ key = "metadata.application", value = var.name_prefix }]
+  group_by        = [{ key = "metadata.application" }]
 }
