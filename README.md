@@ -69,6 +69,8 @@ The helper reads `mgmtClientId`, `mgmtClientSecret`, and `mgmtTsgId` from the li
 
 Examples create their own named configuration and reference externally provisioned workspaces, application endpoints, and tenant integrations where documented. Gateway creates its upstream connections and bindings; its optional organization policy is organization-scoped and explicitly attached to the owned configurations. Read its [platform guide](examples/ai-gateway/platform.md) before enabling optional features. [Resource ownership](docs/adr/0001-example-resource-ownership.md) explains cleanup boundaries.
 
+Terraform files use short `# Concept: purpose` comments at concept boundaries and multiline objects for nested configuration. Keep comments focused on dependencies and product behavior; variable descriptions explain individual inputs.
+
 Run `python3 scripts/validate.py` to check formatting, Registry installation, provider schema validation, and request-helper tests without tenant credentials. An optional [GitHub Actions template](ci/README.md) runs those checks in CI. Recorded live results and their limits are in [validation documentation](docs/validation.md); short sanitized output excerpts appear in the guides.
 
 Supply Chain Skill Scanning coverage will be added after the supporting provider release is published and validated. The current released example uses Model Security.

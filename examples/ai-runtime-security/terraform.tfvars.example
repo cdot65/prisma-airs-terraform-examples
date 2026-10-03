@@ -1,3 +1,6 @@
+# Identity: Keep the prefix stable; edit the annotation for the update lesson.
 name_prefix        = "example-runtime-demo"
 description_suffix = "initial"
-topic_action       = "block"
+
+# Policy: Block requests matching the confidential-information topic.
+topic_action = "block"

@@ -15,6 +15,8 @@ The product READMEs are getting-started guides. This document describes evidence
 
 [validation-receipts.json](validation-receipts.json) identifies tested HCL using SHA-256 after normalizing trailing whitespace. The three other products retain their original configuration receipts. The original two-resource Gateway receipt and transcript are historical; the current expanded application has its own receipt and [run evidence](live-runs/ai-gateway-expanded.md).
 
+The subsequent readability cleanup changes formatting and comments across the 16 example HCL files. [readability-receipt.json](readability-receipt.json) records their current source hashes and matching configuration-token fingerprints against merged revision `d24159b`. The original live-tested hashes and run times remain preserved above; this cleanup used local parsing and validation without another live lifecycle.
+
 Each lifecycle included a saved creation plan, apply, unchanged plan returning exit code 0, saved update plan, apply, refresh-only apply, another unchanged plan returning 0, destroy, empty-state check, and independent product API cleanup queries. Runtime profile revision IDs may change; Gateway configuration IDs remain stable while version IDs advance.
 
 ## Request evidence and boundaries

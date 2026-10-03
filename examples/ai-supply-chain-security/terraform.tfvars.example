@@ -1,2 +1,3 @@
+# Identity: Keep the prefix stable; edit the annotation for the update lesson.
 name_prefix        = "example-supply-chain-demo"
 description_suffix = "initial"

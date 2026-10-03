@@ -1,9 +1,18 @@
-name_prefix = "tf-gateway-demo"
+# Identity: Choose an unused prefix and an existing workspace UUID.
+name_prefix  = "tf-gateway-demo"
 workspace_id = "existing-workspace-uuid"
-upstreams = { openai = { ai_provider_id = "openai-provider-family-uuid" } }
+
+# Connections: Use provider-family UUIDs from the Gateway catalog.
+upstreams = {
+  openai = {
+    ai_provider_id = "openai-provider-family-uuid"
+  }
+}
+
+# Targets: Replace these with two models enabled on your integration.
 primary_upstream = "openai"
-# Replace with two models enabled on your integration.
-primary_model = "gpt-4o-mini"
-secondary_model = "gpt-4.1-mini"
-# Load TF_VAR_upstream_api_keys as JSON through your credential store.
-# Read platform.md before enabling optional resources.
+primary_model    = "gpt-4o-mini"
+secondary_model  = "gpt-4.1-mini"
+
+# Credentials: Load TF_VAR_upstream_api_keys as JSON through your credential store.
+# Optional features: Read platform.md before enabling additional resources.
