@@ -1,0 +1,37 @@
+name: Validate examples
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        example:
+          - ai-runtime-security
+          - ai-red-teaming
+          - ai-gateway
+          - ai-supply-chain-security
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+        with:
+          terraform_version: 1.16.4
+          terraform_wrapper: false
+      - name: Check formatting
+        run: terraform fmt -check -recursive
+      - name: Install published provider
+        working-directory: examples/${{ matrix.example }}
+        run: terraform init -backend=false -input=false -lockfile=readonly
+      - name: Validate configuration
+        working-directory: examples/${{ matrix.example }}
+        run: terraform validate -no-color
+      - name: Check credential helper syntax
+        run: python3 -m py_compile scripts/with-tenant.py

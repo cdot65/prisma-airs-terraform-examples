@@ -1,0 +1,6 @@
+name_prefix         = "example-gateway-demo"
+workspace_id        = "<existing-workspace-uuid>"
+provider_slug       = "<existing-provider-slug-without-at-sign>"
+model               = "<available-model-slug>"
+retry_attempts      = 1
+requests_per_minute = 100

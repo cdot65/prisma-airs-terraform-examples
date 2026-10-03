@@ -1,0 +1,58 @@
+[
+  {
+    "project": "ai-gateway",
+    "provider": "0.9.0",
+    "terraform": "1.16.4",
+    "validated_at": "2026-10-03T12:24:43Z",
+    "create_plan_empty": true,
+    "update_plan_empty_after_refresh": true,
+    "destroy_complete": true,
+    "managed_state_empty": true,
+    "configuration_normalized_sha256": {
+      "main.tf": "315ddd410143010984d3095a53b379a118d8f04dfac96bbb79a501c1b94264fc",
+      "variables.tf": "ce6e89ac19074b60aa11f4c9276fd61334e9ab97f518a9c864a55a66a6ba11ae"
+    }
+  },
+  {
+    "project": "ai-red-teaming",
+    "provider": "0.9.0",
+    "terraform": "1.16.4",
+    "validated_at": "2026-10-03T12:23:25Z",
+    "create_plan_empty": true,
+    "update_plan_empty_after_refresh": true,
+    "destroy_complete": true,
+    "managed_state_empty": true,
+    "configuration_normalized_sha256": {
+      "main.tf": "f864a3afc46841744e321d0121e2ae0791c4123e476458f77c52aa14403a9381",
+      "variables.tf": "41c0e0486fcbe02702b80299e52ffdb2a7d1fd2705a2fc511c4dbca82a75d3ac"
+    }
+  },
+  {
+    "project": "ai-runtime-security",
+    "provider": "0.9.0",
+    "terraform": "1.16.4",
+    "validated_at": "2026-10-03T12:23:04Z",
+    "create_plan_empty": true,
+    "update_plan_empty_after_refresh": true,
+    "destroy_complete": true,
+    "managed_state_empty": true,
+    "configuration_normalized_sha256": {
+      "main.tf": "98adac135563e833f706c03f71fa0ef14b6fe5509893c4926405ee1c524c5edd",
+      "variables.tf": "c3050a6feb652033babc485586b038f43c62c8c642bc62d7447b49698b338269"
+    }
+  },
+  {
+    "project": "ai-supply-chain-security",
+    "provider": "0.9.0",
+    "terraform": "1.16.4",
+    "validated_at": "2026-10-03T12:22:44Z",
+    "create_plan_empty": true,
+    "update_plan_empty_after_refresh": true,
+    "destroy_complete": true,
+    "managed_state_empty": true,
+    "configuration_normalized_sha256": {
+      "main.tf": "41f8883ad92c64772188414a37be8ff6502e581975e40c8ccb116b68d88988d4",
+      "variables.tf": "1e758b048d7120f44e4e4a200ccc891ec78bcb0d1cdaebfa0bdc056c3d27cb1d"
+    }
+  }
+]

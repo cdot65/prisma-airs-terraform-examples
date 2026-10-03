@@ -1,0 +1,10 @@
+name_prefix        = "example-redteam-demo"
+description_suffix = "initial"
+
+# Replace with your actual application endpoint and payload contract.
+target_endpoint = "https://your-application.example/api/chat"
+request_body    = { prompt = "{INPUT}" }
+response_body   = { output = "{RESPONSE}" }
+response_key    = "output"
+
+# Supply TF_VAR_target_auth_headers through the environment.

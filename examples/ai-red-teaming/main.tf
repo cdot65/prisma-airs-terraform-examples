@@ -1,0 +1,42 @@
+terraform {
+  required_version = ">= 1.8.0, < 2.0.0"
+  required_providers {
+    prisma-airs = {
+      source  = "cdot65/prisma-airs"
+      version = "= 0.9.0"
+    }
+  }
+}
+
+provider "prisma-airs" {}
+
+resource "prisma-airs_red_team_target" "application" {
+  name        = "${var.name_prefix}-application-target"
+  description = "Application assessment target (${var.description_suffix})."
+  target_type = "APPLICATION"
+
+  custom {
+    api_endpoint    = var.target_endpoint
+    request_headers = { "Content-Type" = "application/json" }
+    request_body    = var.request_body
+    response_body   = var.response_body
+    response_key    = var.response_key
+  }
+
+  headers_auth {
+    headers = var.target_auth_headers
+  }
+}
+
+resource "prisma-airs_red_team_custom_prompt_set" "assessment" {
+  name        = "${var.name_prefix}-assessment-prompts"
+  description = "Custom assessment prompt collection (${var.description_suffix})."
+}
+
+output "target_id" {
+  value = prisma-airs_red_team_target.application.uuid
+}
+
+output "prompt_set_id" {
+  value = prisma-airs_red_team_custom_prompt_set.assessment.uuid
+}

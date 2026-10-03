@@ -1,0 +1,3 @@
+# Examples own disposable configuration and reference existing connections
+
+Each product project owns new, uniquely named configuration objects and references existing workspaces, upstream integrations and target applications. Full platform provisioning would require workspace/IAM ownership and additional upstream credentials; importing shared objects would also make example cleanup affect existing users. Keeping those connections external makes it possible to validate updates and destroy independently. Shared tenant Skill Scanning instances and rule policies are outside the example's mutation scope; a synthetic fingerprint can exercise trust-override management without trusting an actual deployed skill.
