@@ -68,3 +68,25 @@ run "reject_missing_rule_identity" {
   }
   expect_failures = [var.manage_skill_rule]
 }
+
+run "missing_native_rule_list" {
+  command = plan
+  variables {
+    enable_skill_scanning = true
+  }
+  override_data {
+    target = data.prisma-airs_supply_chain_skill_scanning_rules.catalog[0]
+    values = { result = {} }
+  }
+  assert {
+    condition     = output.skill_rule_count == null
+    error_message = "Unavailable native rule lists must remain null rather than break a plan or report zero."
+  }
+}
+run "reject_unversioned_authorization_code" {
+  command = plan
+  variables {
+    skill_auth_code = "mock-write-only-code"
+  }
+  expect_failures = [var.skill_auth_code]
+}

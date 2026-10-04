@@ -68,13 +68,17 @@ workspace_scope_management = "managed"
 
 Use an unused scope name and an account with Gateway admin, IAM permissions, and the necessary existing role grants. Scope binding associates the workspace slug; it does not grant roles or install Gateway infrastructure. All child resources use the selected UUID, so Terraform cleans them before archiving the workspace and confirming deletion of the owned scope.
 
+A developer user key requires `developer_user_id` to identify an existing member of the selected workspace. A newly created workspace needs membership and access grants arranged outside this provider before enabling that key.
+
 For a preexisting external scope, set `workspace_scope_management = "external"`. Its owner must maintain bindings and grants; Terraform makes no IAM writes. Never switch an existing state between workspace modes as an upgrade shortcut: first review the planned replacements and cleanup.
 
 Supply `workspace_default_metadata` with the keys and values permitted by your tenant's Gateway metadata schema, including every required property. Load that map from the environment as `TF_VAR_workspace_default_metadata`, or use nonsecret sample inputs. Use `{}` only when the tenant permits empty metadata. Arbitrary keys or missing required properties produce HTTP 400; there is no universal valid metadata object.
 
 Optional `workspace_rate_limits` owns the entire workspace rate collection. Removing previously configured limits clears them. The application already manages its token budget; do not create a second inline workspace usage policy, because the service permits one usage policy per workspace. Do not make workspace defaults reference a child config during creation, which would form a dependency cycle.
 
-`workspace` reports the selected UUID, slug, ownership, and inventory completeness. An omitted API pagination flag makes completeness false; matching list rows cannot establish exclusive scope ownership. `enable_platform_discovery = true` adds read-only pages for every Gateway metadata family, with their corresponding access requirements.
+`workspace` always reports the selected UUID and ownership. Its slug comes from the owned resource, or from optional discovery for an existing workspace; otherwise it is null. `enable_platform_discovery = true` adds workspace and platform metadata reads, requiring the corresponding admin access. `platform_page_counts` shows returned item counts after owned writes, not exhaustive inventories. Changes by other users can alter these counts on refresh without a managed-resource diff. Inventory completeness is null when discovery is off; an omitted API pagination flag makes it false when enabled. Matching list rows cannot establish exclusive scope ownership.
+
+Disable platform discovery before recovering a missing or archived workspace: the singular lookup rejects those identities. Follow the [workspace recovery guide](https://cdot65.github.io/terraform-provider-prisma-airs/resources/gateway-workspace/) and account for child resources whose archived workspace no longer allows reads.
 
 For import, recovery after partial failures, and managed/external cleanup, use the [workspace guide](https://cdot65.github.io/terraform-provider-prisma-airs/resources/gateway-workspace/). Preserve state checkpoints; verify the exact workspace and dedicated scope before adopting either.
 
@@ -173,5 +177,3 @@ Destroy removes the owned keys, controls, providers, and integration bindings. I
 [Provider Gateway workflow](https://cdot65.github.io/terraform-provider-prisma-airs/guides/gateway-workflow/) · [Validation details](../../docs/validation.md)
 
 [Provider 0.10.0 live evidence](../../docs/live-runs/provider-0.10.0.md) · [Complete release coverage](../../docs/resource-coverage.md)
-
-A developer user key requires `developer_user_id` to identify an existing member of the selected workspace. A newly created workspace needs membership and access grants arranged outside this provider before enabling that key.

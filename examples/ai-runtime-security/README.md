@@ -55,6 +55,8 @@ The default lesson creates only the topic and policy. Optional controls cover th
 | `deployment_profile_name` | Exact name in the first 100 deployment profiles; the plan rejects missing or ambiguous matches |
 | `existing_customer_app_name` | Adopt an existing app by import; it cannot be created by this resource |
 
+`dlp_profile_page_count` reports the number returned in this page (at most 10), not the tenant-wide catalog size.
+
 Keep `name_prefix` at most 27 characters when issuing a key. Find the authorized deployment profile name in your tenant before enabling key creation. Retrieve the one-time `scanning_api_key` through your secure output workflow. A refresh retains a creation-time key; import cannot retrieve the original secret. Key inputs, including rotation settings, require replacement. Deleting a key also deletes its associated app, so this example always uses its own scanner app and rejects importing that app separately.
 
 For an **unrelated existing app**, set `existing_customer_app_name`, then import before apply:
@@ -63,6 +65,8 @@ For an **unrelated existing app**, set `existing_customer_app_name`, then import
 terraform import 'prisma-airs_runtime_customer_app.existing[0]' 'YOUR_EXISTING_APP_NAME'
 terraform plan
 ```
+
+Import reads the application. The first apply can send a PUT because this configuration sets `updated_by`; review the plan and the [deployment auth-code requirements](https://cdot65.github.io/terraform-provider-prisma-airs/resources/customer-app/) before applying.
 
 Its `prevent_destroy` guard intentionally blocks general cleanup while adopted. To leave it with its external owner, back up state securely, set the input back to null, and remove only the binding before planning cleanup:
 

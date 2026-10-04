@@ -29,13 +29,13 @@ Run `python3 scripts/coverage.py` after installation to check freshness, or add 
 | data | `prisma-airs_supply_chain_skill_scanning_overrides` | [ai-supply-chain-security/skills.tf](../examples/ai-supply-chain-security/skills.tf) |
 | data | `prisma-airs_supply_chain_skill_scanning_rule_instances` | [ai-supply-chain-security/skills.tf](../examples/ai-supply-chain-security/skills.tf) |
 | data | `prisma-airs_supply_chain_skill_scanning_rules` | [ai-supply-chain-security/skills.tf](../examples/ai-supply-chain-security/skills.tf) |
-| data | `prisma-airs_supply_chain_skill_scanning_scan` | [ai-supply-chain-security/skill-discovery.tf](../examples/ai-supply-chain-security/skill-discovery.tf), [ai-supply-chain-security/skill-discovery.tf](../examples/ai-supply-chain-security/skill-discovery.tf) |
+| data | `prisma-airs_supply_chain_skill_scanning_scan` | [ai-supply-chain-security/skill-discovery.tf](../examples/ai-supply-chain-security/skill-discovery.tf) |
 | data | `prisma-airs_supply_chain_skill_scanning_scans` | [ai-supply-chain-security/skill-discovery.tf](../examples/ai-supply-chain-security/skill-discovery.tf) |
 | data | `prisma-airs_supply_chain_skill_scanning_statistics` | [ai-supply-chain-security/skill-discovery.tf](../examples/ai-supply-chain-security/skill-discovery.tf) |
 | data | `prisma-airs_supply_chain_skill_scanning_vulnerabilities` | [ai-supply-chain-security/skill-discovery.tf](../examples/ai-supply-chain-security/skill-discovery.tf) |
 | resource | `prisma-airs_gateway_config` | [ai-gateway/main.tf](../examples/ai-gateway/main.tf) |
 | resource | `prisma-airs_gateway_deployment` | [ai-gateway/platform.tf](../examples/ai-gateway/platform.tf) |
-| resource | `prisma-airs_gateway_guardrail` | [ai-gateway/main.tf](../examples/ai-gateway/main.tf), [ai-gateway/main.tf](../examples/ai-gateway/main.tf) |
+| resource | `prisma-airs_gateway_guardrail` | [ai-gateway/main.tf](../examples/ai-gateway/main.tf) |
 | resource | `prisma-airs_gateway_integration` | [ai-gateway/main.tf](../examples/ai-gateway/main.tf) |
 | resource | `prisma-airs_gateway_integration_workspace_binding` | [ai-gateway/main.tf](../examples/ai-gateway/main.tf) |
 | resource | `prisma-airs_gateway_mcp_integration` | [ai-gateway/platform.tf](../examples/ai-gateway/platform.tf) |

@@ -29,7 +29,12 @@ resource "prisma-airs_supply_chain_skill_scanning_rule" "policy" {
 }
 
 output "skill_rule_count" {
-  value = var.enable_skill_scanning ? length(data.prisma-airs_supply_chain_skill_scanning_rules.catalog[0].result.rules) : null
+  value = var.enable_skill_scanning ? try(length(data.prisma-airs_supply_chain_skill_scanning_rules.catalog[0].result.rules), null) : null
+}
+
+output "effective_skill_rule_count" {
+  description = "Returned effective rule settings; null when the native list is unavailable."
+  value       = var.enable_skill_scanning ? try(length(data.prisma-airs_supply_chain_skill_scanning_rule_instances.effective[0].result.rule_instances), null) : null
 }
 
 output "trust_fingerprint" {

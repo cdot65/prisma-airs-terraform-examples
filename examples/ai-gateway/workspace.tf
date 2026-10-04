@@ -20,18 +20,21 @@ locals {
 
 # Discovery: Read safe workspace metadata; list completeness is reported, not assumed.
 data "prisma-airs_gateway_workspace" "selected" {
+  count        = var.enable_platform_discovery ? 1 : 0
   workspace_id = local.workspace_id
 }
 
 data "prisma-airs_gateway_workspaces" "active" {
-  status = "active"
+  depends_on = [prisma-airs_gateway_workspace.application]
+  count      = var.enable_platform_discovery ? 1 : 0
+  status     = "active"
 }
 
 output "workspace" {
   value = {
-    id                 = data.prisma-airs_gateway_workspace.selected.id
-    slug               = data.prisma-airs_gateway_workspace.selected.slug
+    id                 = local.workspace_id
+    slug               = var.enable_platform_discovery ? data.prisma-airs_gateway_workspace.selected[0].slug : (var.create_workspace ? prisma-airs_gateway_workspace.application[0].slug : null)
     owned              = var.create_workspace
-    inventory_complete = data.prisma-airs_gateway_workspaces.active.complete
+    inventory_complete = var.enable_platform_discovery ? data.prisma-airs_gateway_workspaces.active[0].complete : null
   }
 }

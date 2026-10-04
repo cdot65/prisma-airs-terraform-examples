@@ -33,7 +33,7 @@ export PANW_SKILL_SCANNING_MGMT_ENDPOINT=https://api.apps.paloaltonetworks.com/a
 
 Set `enable_skill_scanning = true`, review a plan, and apply. `skills.tf` reads the catalog and effective tenant policy, creates an override for a deterministic synthetic fingerprint, and looks up that exact override. It leaves shared rules and tenant onboarding unchanged. Use a unique prefix; do not reuse a real skill's fingerprint for this exercise.
 
-`skill_rule_count` is the Skill Scanning catalog size. `trust_fingerprint` is the synthetic fingerprint whose trust will be removed on destroy. This demonstrates trust configuration, not successful skill analysis.
+`skill_rule_count` is the returned Skill Scanning rule count, or null when unavailable. `effective_skill_rule_count` reports the number of tenant rule settings returned. `trust_fingerprint` is the synthetic fingerprint whose trust will be removed on destroy. This demonstrates trust configuration, not successful skill analysis.
 
 | Optional input | What it enables |
 | --- | --- |

@@ -53,6 +53,7 @@ output "scanning_api_key" {
   value       = var.create_scanning_key ? prisma-airs_runtime_api_key.scanner[0].api_key : null
 }
 
-output "dlp_catalog_count" {
-  value = var.enable_runtime_discovery ? data.prisma-airs_runtime_dlp_profiles.catalog[0].total_count : null
+output "dlp_profile_page_count" {
+  description = "Number of DLP profiles returned in this page, bounded by the configured limit."
+  value       = var.enable_runtime_discovery ? data.prisma-airs_runtime_dlp_profiles.catalog[0].total_count : null
 }

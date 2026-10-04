@@ -10,9 +10,9 @@
       "provider": "0.10.0",
       "terraform": "1.16.4",
       "source_sha256": {
-        "access-variables.tf": "60fe4d022101ad16e5932624520dbea323df79d5036c7d408bcb243b70be311a",
+        "access-variables.tf": "f33efa672a34707d8056560febd893fb50af7430503db6217458caa3590827e9",
         "variables.tf": "cb1be89ca822dcdf17b06038c05d02225ba32ef3b7bfbed851f63f3424659d38",
-        "access.tf": "612fad84f7804322dbb2b35064adbee2665849e07ad897433728810409b7b480",
+        "access.tf": "307f03fce2a7190862081d538ad950a3eade7ad56e836611080a10537204a09f",
         "main.tf": "f2d166607eb74075f2545567f76b2cc9bbcb2328a8ceb747a311f02ff93f486d"
       },
       "create_empty_plan": true,
@@ -32,11 +32,28 @@
         }
       ],
       "managed_resources_created": 3,
+      "read_data_sources": [
+        "prisma-airs_runtime_deployment_profiles",
+        "prisma-airs_runtime_dlp_profiles"
+      ],
+      "feature_flags": {
+        "enable_runtime_discovery": true,
+        "create_scanning_key": true
+      },
       "runtime_checks": {},
-      "timestamp": "2026-10-04T03:30:02Z",
+      "timestamp": "2026-10-04T04:04:09Z",
       "destroy_complete": true,
       "managed_state_empty": true,
       "variant": "runtime-scanning-key",
+      "read_data_addresses": [
+        "data.prisma-airs_runtime_deployment_profiles.catalog[0]",
+        "data.prisma-airs_runtime_dlp_profiles.catalog[0]"
+      ],
+      "managed_resource_types": [
+        "prisma-airs_runtime_api_key",
+        "prisma-airs_runtime_custom_topic",
+        "prisma-airs_runtime_security_profile"
+      ],
       "boundaries": {
         "live_shared_skill_rule_changes": false,
         "live_skill_instance_onboarding": false,
@@ -75,6 +92,13 @@
       "destroy_complete": true,
       "managed_state_empty": true,
       "variant": "red-teaming",
+      "read_data_sources": [],
+      "read_data_addresses": [],
+      "managed_resource_types": [
+        "prisma-airs_red_team_custom_prompt_set",
+        "prisma-airs_red_team_target"
+      ],
+      "feature_flags": {},
       "boundaries": {
         "live_shared_skill_rule_changes": false,
         "live_skill_instance_onboarding": false,
@@ -90,8 +114,8 @@
       "source_sha256": {
         "variables.tf": "4919a5ca9f93da5a10717cf98d22aef80092f9784f43220cde0e8c2fb348ef9f",
         "skill-discovery.tf": "03c0dda41404f0f1ed373b29296c272fecfbf5e1f580a08336d5843a11843f98",
-        "skill-variables.tf": "ac0349377750c18a85423c172a24f2c6d6fe38f80bd4698a00be430ed45e7b0c",
-        "skills.tf": "d7894ce3cd93a52cdb15b456038be1f7bcd5baf16c1edbec00897ce35c91f72e",
+        "skill-variables.tf": "cd3acefee1a0032085ac254af912677e6599b1067d770a77d8d4c6416a629b81",
+        "skills.tf": "854f052103f0ddb2e842e58a9356a7401232b6dd69951ea22f3cfbf8c75b77a9",
         "skill-instance.tf": "218d8dac4d3b7377b298c85973ec8ea535aecabfcc8dc26683fcecdd75c3b395",
         "main.tf": "8c2997287f4feb90cbf27601d3a588f823e48ad8208270fadcd48de48d4bb147"
       },
@@ -113,11 +137,42 @@
         }
       ],
       "managed_resources_created": 2,
+      "read_data_sources": [
+        "prisma-airs_supply_chain_security_rules",
+        "prisma-airs_supply_chain_skill_scanning_attack_chains",
+        "prisma-airs_supply_chain_skill_scanning_overrides",
+        "prisma-airs_supply_chain_skill_scanning_rule_instances",
+        "prisma-airs_supply_chain_skill_scanning_rules",
+        "prisma-airs_supply_chain_skill_scanning_scan",
+        "prisma-airs_supply_chain_skill_scanning_scans",
+        "prisma-airs_supply_chain_skill_scanning_statistics",
+        "prisma-airs_supply_chain_skill_scanning_vulnerabilities"
+      ],
+      "feature_flags": {
+        "enable_skill_scanning": true,
+        "enable_skill_history": true
+      },
       "runtime_checks": {},
-      "timestamp": "2026-10-04T03:41:57Z",
+      "timestamp": "2026-10-04T04:03:51Z",
       "destroy_complete": true,
       "managed_state_empty": true,
       "variant": "model-and-skill",
+      "read_data_addresses": [
+        "data.prisma-airs_supply_chain_security_rules.catalog",
+        "data.prisma-airs_supply_chain_skill_scanning_attack_chains.selected[0]",
+        "data.prisma-airs_supply_chain_skill_scanning_overrides.owned[0]",
+        "data.prisma-airs_supply_chain_skill_scanning_rule_instances.effective[0]",
+        "data.prisma-airs_supply_chain_skill_scanning_rules.catalog[0]",
+        "data.prisma-airs_supply_chain_skill_scanning_scan.fingerprint[0]",
+        "data.prisma-airs_supply_chain_skill_scanning_scan.selected[0]",
+        "data.prisma-airs_supply_chain_skill_scanning_scans.history[0]",
+        "data.prisma-airs_supply_chain_skill_scanning_statistics.summary[0]",
+        "data.prisma-airs_supply_chain_skill_scanning_vulnerabilities.selected[0]"
+      ],
+      "managed_resource_types": [
+        "prisma-airs_supply_chain_security_group",
+        "prisma-airs_supply_chain_skill_scanning_override"
+      ],
       "boundaries": {
         "live_shared_skill_rule_changes": false,
         "live_skill_instance_onboarding": false,
@@ -135,9 +190,9 @@
         "routing.tf": "e8eccbe31f2f3590260adb7942ffb4b2d840f6f18bfefbc700d7b58c721040e2",
         "platform-variables.tf": "2961b76b9e9fb794e314ed583ea566e86cd3b1eebe3d64204816d942d24b7188",
         "workspace-variables.tf": "fe13301158b735dc8eba976b07fa32e40f0f4495921b4b92f6d5330ca8141273",
-        "workspace.tf": "b777d871d8a0a2567176ee3986cc991c23313936495416fd5738dbcb39049c5e",
+        "workspace.tf": "1ec82918328c9891b051ec0fe26000b1e0e28a3573b8239998c58a5980021101",
         "platform.tf": "18ea329a957010a59d6a7ed18e5945c1bf8d33abb357e9700eea7d9c0b52b436",
-        "discovery.tf": "f7df5fa3210ebc292351f7dabf531dd7ae8d71ba6e0089b39d38e9b858565342",
+        "discovery.tf": "b0dbc021c21f8c09733abacd5ba5701fc1a751149b03b88fd9d5b660c11db4ae",
         "outputs.tf": "7fae69935427491b6056c3b90574a27f52ceb0284afc3bff933b0d279337748e",
         "main.tf": "eed87e3f12516682832a860792638966b8143c48ecf4433da8c4eba167060dab"
       },
@@ -164,6 +219,30 @@
         }
       ],
       "managed_resources_created": 26,
+      "read_data_sources": [
+        "prisma-airs_gateway_configs",
+        "prisma-airs_gateway_deployments",
+        "prisma-airs_gateway_guardrails",
+        "prisma-airs_gateway_integrations",
+        "prisma-airs_gateway_mcp_integrations",
+        "prisma-airs_gateway_mcp_servers",
+        "prisma-airs_gateway_org_guardrails",
+        "prisma-airs_gateway_providers",
+        "prisma-airs_gateway_rate_limits",
+        "prisma-airs_gateway_secret_references",
+        "prisma-airs_gateway_service_api_keys",
+        "prisma-airs_gateway_usage_limits",
+        "prisma-airs_gateway_user_api_keys",
+        "prisma-airs_gateway_workspace",
+        "prisma-airs_gateway_workspaces"
+      ],
+      "feature_flags": {
+        "enable_mcp": true,
+        "enable_deployment_registration": true,
+        "enable_org_guardrail": true,
+        "create_workspace": false,
+        "enable_platform_discovery": true
+      },
       "runtime_checks": {
         "inference": {
           "exit": 0,
@@ -175,7 +254,7 @@
         },
         "balanced": {
           "exit": 0,
-          "output": "balanced: HTTP 200; model=<SANITIZED_MODEL>; cache=DISABLED; target=config.targets[1]\nbalanced: HTTP 200; model=<SANITIZED_MODEL>; cache=DISABLED; target=config.targets[1]\nbalanced: HTTP 200; model=<SANITIZED_MODEL>; cache=DISABLED; target=config.targets[0]\nbalanced: HTTP 200; model=<SANITIZED_MODEL>; cache=DISABLED; target=config.targets[0]"
+          "output": "balanced: HTTP 200; model=<SANITIZED_MODEL>; cache=DISABLED; target=config.targets[0]\nbalanced: HTTP 200; model=<SANITIZED_MODEL>; cache=DISABLED; target=config.targets[1]\nbalanced: HTTP 200; model=<SANITIZED_MODEL>; cache=DISABLED; target=config.targets[0]\nbalanced: HTTP 200; model=<SANITIZED_MODEL>; cache=DISABLED; target=config.targets[1]"
         },
         "conditional-standard": {
           "exit": 0,
@@ -198,10 +277,45 @@
           "output": "fallback: organization default.contains denied probe (HTTP 446)"
         }
       },
-      "timestamp": "2026-10-04T03:38:45Z",
+      "timestamp": "2026-10-04T04:09:12Z",
       "destroy_complete": true,
       "managed_state_empty": true,
       "variant": "gateway-existing-workspace-full-platform",
+      "read_data_addresses": [
+        "data.prisma-airs_gateway_configs.catalog[0]",
+        "data.prisma-airs_gateway_deployments.catalog[0]",
+        "data.prisma-airs_gateway_guardrails.catalog[0]",
+        "data.prisma-airs_gateway_integrations.catalog[0]",
+        "data.prisma-airs_gateway_mcp_integrations.catalog[0]",
+        "data.prisma-airs_gateway_mcp_servers.catalog[0]",
+        "data.prisma-airs_gateway_org_guardrails.catalog[0]",
+        "data.prisma-airs_gateway_providers.catalog[0]",
+        "data.prisma-airs_gateway_rate_limits.catalog[0]",
+        "data.prisma-airs_gateway_secret_references.catalog[0]",
+        "data.prisma-airs_gateway_service_api_keys.catalog[0]",
+        "data.prisma-airs_gateway_usage_limits.catalog[0]",
+        "data.prisma-airs_gateway_user_api_keys.catalog[0]",
+        "data.prisma-airs_gateway_workspace.selected[0]",
+        "data.prisma-airs_gateway_workspaces.active[0]"
+      ],
+      "managed_resource_types": [
+        "prisma-airs_gateway_config",
+        "prisma-airs_gateway_deployment",
+        "prisma-airs_gateway_guardrail",
+        "prisma-airs_gateway_integration",
+        "prisma-airs_gateway_integration_workspace_binding",
+        "prisma-airs_gateway_mcp_integration",
+        "prisma-airs_gateway_mcp_integration_workspace_binding",
+        "prisma-airs_gateway_mcp_server",
+        "prisma-airs_gateway_org_guardrail",
+        "prisma-airs_gateway_provider",
+        "prisma-airs_gateway_rate_limit",
+        "prisma-airs_gateway_secret_reference",
+        "prisma-airs_gateway_service_api_key",
+        "prisma-airs_gateway_usage_limit",
+        "prisma-airs_gateway_user_api_key",
+        "prisma-airs_runtime_security_profile"
+      ],
       "boundaries": {
         "live_shared_skill_rule_changes": false,
         "live_skill_instance_onboarding": false,
@@ -219,9 +333,9 @@
         "routing.tf": "e8eccbe31f2f3590260adb7942ffb4b2d840f6f18bfefbc700d7b58c721040e2",
         "platform-variables.tf": "2961b76b9e9fb794e314ed583ea566e86cd3b1eebe3d64204816d942d24b7188",
         "workspace-variables.tf": "fe13301158b735dc8eba976b07fa32e40f0f4495921b4b92f6d5330ca8141273",
-        "workspace.tf": "b777d871d8a0a2567176ee3986cc991c23313936495416fd5738dbcb39049c5e",
+        "workspace.tf": "1ec82918328c9891b051ec0fe26000b1e0e28a3573b8239998c58a5980021101",
         "platform.tf": "18ea329a957010a59d6a7ed18e5945c1bf8d33abb357e9700eea7d9c0b52b436",
-        "discovery.tf": "f7df5fa3210ebc292351f7dabf531dd7ae8d71ba6e0089b39d38e9b858565342",
+        "discovery.tf": "b0dbc021c21f8c09733abacd5ba5701fc1a751149b03b88fd9d5b660c11db4ae",
         "outputs.tf": "7fae69935427491b6056c3b90574a27f52ceb0284afc3bff933b0d279337748e",
         "main.tf": "eed87e3f12516682832a860792638966b8143c48ecf4433da8c4eba167060dab"
       },
@@ -254,6 +368,14 @@
         }
       ],
       "managed_resources_created": 20,
+      "read_data_sources": [],
+      "feature_flags": {
+        "enable_mcp": false,
+        "enable_deployment_registration": false,
+        "enable_org_guardrail": false,
+        "create_workspace": true,
+        "enable_platform_discovery": false
+      },
       "runtime_checks": {
         "inference": {
           "exit": 0,
@@ -262,12 +384,45 @@
         "denial": {
           "exit": 0,
           "output": "fallback: default.contains denied probe (HTTP 446)"
+        },
+        "balanced": {
+          "exit": 0,
+          "output": "balanced: HTTP 200; model=<SANITIZED_MODEL>; cache=DISABLED; target=config.targets[1]\nbalanced: HTTP 200; model=<SANITIZED_MODEL>; cache=DISABLED; target=config.targets[0]\nbalanced: HTTP 200; model=<SANITIZED_MODEL>; cache=DISABLED; target=config.targets[0]\nbalanced: HTTP 200; model=<SANITIZED_MODEL>; cache=DISABLED; target=config.targets[1]"
+        },
+        "conditional-standard": {
+          "exit": 0,
+          "output": "conditional: HTTP 200; model=<SANITIZED_MODEL>; cache=DISABLED; target=config.targets[0]"
+        },
+        "conditional-premium": {
+          "exit": 0,
+          "output": "conditional: HTTP 200; model=<SANITIZED_MODEL>; cache=DISABLED; target=config.targets[1]"
+        },
+        "cache": {
+          "exit": 0,
+          "output": "cached: HTTP 200; model=<SANITIZED_MODEL>; cache=MISS; target=config\ncached: HTTP 200; model=<SANITIZED_MODEL>; cache=HIT; target=config"
+        },
+        "airs-injection": {
+          "exit": 0,
+          "output": "fallback: panw-prisma-airs.intercept denied probe (HTTP 446)"
         }
       },
-      "timestamp": "2026-10-04T03:29:42Z",
+      "timestamp": "2026-10-04T04:10:53Z",
       "destroy_complete": true,
       "managed_state_empty": true,
       "variant": "gateway-managed-workspace",
+      "read_data_addresses": [],
+      "managed_resource_types": [
+        "prisma-airs_gateway_config",
+        "prisma-airs_gateway_guardrail",
+        "prisma-airs_gateway_integration",
+        "prisma-airs_gateway_integration_workspace_binding",
+        "prisma-airs_gateway_provider",
+        "prisma-airs_gateway_rate_limit",
+        "prisma-airs_gateway_service_api_key",
+        "prisma-airs_gateway_usage_limit",
+        "prisma-airs_gateway_workspace",
+        "prisma-airs_runtime_security_profile"
+      ],
       "boundaries": {
         "live_shared_skill_rule_changes": false,
         "live_skill_instance_onboarding": false,
@@ -306,32 +461,32 @@
       {
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_config",
-        "outcome": "workspace absent; child read forbidden (HTTP 403)"
+        "outcome": "workspace archived; child read forbidden (HTTP 403)"
       },
       {
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_config",
-        "outcome": "workspace absent; child read forbidden (HTTP 403)"
+        "outcome": "workspace archived; child read forbidden (HTTP 403)"
       },
       {
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_config",
-        "outcome": "workspace absent; child read forbidden (HTTP 403)"
+        "outcome": "workspace archived; child read forbidden (HTTP 403)"
       },
       {
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_config",
-        "outcome": "workspace absent; child read forbidden (HTTP 403)"
+        "outcome": "workspace archived; child read forbidden (HTTP 403)"
       },
       {
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_guardrail",
-        "outcome": "workspace absent; child read forbidden (HTTP 403)"
+        "outcome": "workspace archived; child read forbidden (HTTP 403)"
       },
       {
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_guardrail",
-        "outcome": "workspace absent; child read forbidden (HTTP 403)"
+        "outcome": "workspace archived; child read forbidden (HTTP 403)"
       },
       {
         "project": "ai-gateway",
@@ -356,52 +511,54 @@
       {
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_provider",
-        "outcome": "workspace absent; child read forbidden (HTTP 403)"
+        "outcome": "workspace archived; child read forbidden (HTTP 403)"
       },
       {
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_provider",
-        "outcome": "workspace absent; child read forbidden (HTTP 403)"
+        "outcome": "workspace archived; child read forbidden (HTTP 403)"
       },
       {
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_rate_limit",
-        "outcome": "workspace absent; child read forbidden (HTTP 403)"
+        "outcome": "workspace archived; child read forbidden (HTTP 403)"
       },
       {
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_service_api_key",
-        "outcome": "workspace absent; child read forbidden (HTTP 403)"
+        "outcome": "workspace archived; child read forbidden (HTTP 403)"
       },
       {
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_service_api_key",
-        "outcome": "workspace absent; child read forbidden (HTTP 403)"
+        "outcome": "workspace archived; child read forbidden (HTTP 403)"
       },
       {
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_service_api_key",
-        "outcome": "workspace absent; child read forbidden (HTTP 403)"
+        "outcome": "workspace archived; child read forbidden (HTTP 403)"
       },
       {
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_service_api_key",
-        "outcome": "workspace absent; child read forbidden (HTTP 403)"
+        "outcome": "workspace archived; child read forbidden (HTTP 403)"
       },
       {
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_usage_limit",
-        "outcome": "workspace absent; child read forbidden (HTTP 403)"
+        "outcome": "workspace archived; child read forbidden (HTTP 403)"
       },
       {
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_workspace",
-        "outcome": "absent"
+        "outcome": "archived",
+        "verification": "Admin archived-workspace list contains the matching UUID with status archived; detail returns HTTP 404. Positive match does not depend on inventory completeness."
       },
       {
         "project": "ai-gateway",
         "type": "managed IAM scope",
-        "outcome": "absent"
+        "outcome": "absent",
+        "verification": "GET the exact owned IAM scope returned HTTP 404/410."
       },
       {
         "project": "ai-gateway",

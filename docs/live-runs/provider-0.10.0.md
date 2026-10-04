@@ -2,7 +2,7 @@
 
 These runs used the signed Registry provider `cdot65/prisma-airs` **0.10.0**, Terraform **1.16.4**, and an authorized test tenant on **2026-10-04**. Management and upstream credentials were supplied through environment variables. This is recorded evidence; the [product guides](../../README.md#examples) explain how to get started.
 
-Tenant/resource identifiers, endpoints, and returned model names are sanitized. No credentials, saved plans, state, or raw API responses are published. [Machine-readable receipts](provider-0.10.0-receipts.json) record exact SHA-256 hashes of every tested root's `.tf` files, update actions, and runtime results.
+Tenant/resource identifiers, endpoints, and returned model names are sanitized. No credentials, saved plans, state, or raw API responses are published. [Machine-readable receipts](provider-0.10.0-receipts.json) record exact SHA-256 hashes of every tested root's `.tf` files, update actions, enabled feature selectors, read data-source families, and runtime results.
 
 ## Configuration results
 
@@ -11,12 +11,12 @@ Tenant/resource identifiers, endpoints, and returned model names are sanitized. 
 | Runtime Security | 3: topic, security profile, scanning API key | Topic action and profile annotation | Empty plans before/after refresh; complete profile/topic/key/app inventories contain no fixtures |
 | Red Teaming | 2: target and prompt set | Both descriptions | Empty plans; target absent and prompt set inactive |
 | Supply Chain | 2: model group and synthetic Skill trust override | Group annotation; override replacement | Empty plans; group tombstoned and fingerprint absent |
-| Gateway: owned workspace | 20, including workspace and its managed IAM scope lifecycle | Workspace/integration descriptions and fallback retry | Empty plans; workspace and scope absent; no managed state |
+| Gateway: owned workspace | 20, including workspace and its managed IAM scope lifecycle | Workspace/integration descriptions and fallback retry | Empty plans; workspace positively confirmed archived, owned scope absent; no managed state |
 | Gateway: existing workspace, full platform | 26, covering the 15 other Gateway resource types plus a Runtime profile | Integration descriptions and fallback retry | Empty plans; resources absent/archived; original connection remains active |
 
 Every variant ran `init -lockfile=readonly`, `validate`, a saved create plan/apply, an unchanged plan returning **0**, a saved update plan/apply, refresh-only apply, another unchanged plan returning **0**, and a saved destroy plan/apply. No managed resources remain in any state. Independent API reads verified cleanup separately from Terraform's empty-state checks.
 
-Deleting the owned workspace makes some child reads return **403**. The audit records those reads as inaccessible after confirming that the workspace and IAM scope are absent; it does not interpret 403 as proof that an individual child is absent. The existing-workspace run allows independent child checks. Model groups and some Gateway registrations retain archived/tombstoned records.
+Archiving the owned workspace makes some child reads return **403**. The audit records those reads as inaccessible after positively matching the workspace UUID and `status = archived` in the admin archived list and confirming the owned IAM scope is absent; it does not interpret 403 as proof that an individual child is absent. The existing-workspace run allows independent child checks. Model groups and some Gateway registrations retain archived/tombstoned records.
 
 ## Read-only discovery
 

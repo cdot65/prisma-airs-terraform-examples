@@ -6,13 +6,14 @@ variable "enable_runtime_discovery" {
 }
 
 variable "create_scanning_key" {
+  description = "Issue a scanning key associated only with this example's disposable customer app."
+  type        = bool
+  default     = false
+
   validation {
     condition     = !var.create_scanning_key || length(var.name_prefix) <= 27
     error_message = "Scanning-key creation requires a name_prefix of at most 27 characters (the key name limit is 31)."
   }
-  description = "Issue a scanning key associated only with this example's disposable customer app."
-  type        = bool
-  default     = false
 
   validation {
     condition     = !var.create_scanning_key || try(length(trimspace(var.deployment_profile_name)) > 0, false)

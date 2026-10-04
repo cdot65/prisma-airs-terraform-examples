@@ -102,6 +102,11 @@ variable "skill_auth_code" {
   sensitive   = true
   ephemeral   = true
   default     = null
+
+  validation {
+    condition     = var.skill_auth_code == null || var.skill_auth_code_version != null
+    error_message = "Set skill_auth_code_version when supplying an authorization code."
+  }
 }
 
 variable "skill_auth_code_version" {

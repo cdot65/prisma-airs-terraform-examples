@@ -28,7 +28,7 @@ Set `developer_user_id` to an existing authorized workspace user's UUID:
 developer_user_id = "existing-user-uuid"
 ```
 
-Terraform creates a user key with completion scope and the fallback config. It does not create the user or grant workspace membership. `developer_api_key` is sensitive one-time material retained in state. Destroy removes only this key.
+Terraform creates a user key with completion scope and the fallback config. It does not create the user or grant workspace membership. Arrange membership and access grants outside this provider before enabling a user key for a new workspace. `developer_api_key` is sensitive one-time material retained in state. Destroy removes only this key.
 
 ## MCP tools
 
