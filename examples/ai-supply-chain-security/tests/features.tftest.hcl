@@ -1,4 +1,7 @@
 mock_provider "prisma-airs" {
+  mock_data "prisma-airs_supply_chain_skill_scanning_overrides" {
+    defaults = { result = { skill_overrides = [{}] } }
+  }
   mock_data "prisma-airs_supply_chain_skill_scanning_rules" {
     defaults = {
       result = { rules = [] }
@@ -19,7 +22,7 @@ run "model_only" {
 }
 
 run "policy_trust_and_history" {
-  command = plan
+  command = apply
   variables {
     enable_skill_scanning      = true
     enable_skill_history       = true
@@ -30,7 +33,7 @@ run "policy_trust_and_history" {
     existing_skill_fingerprint = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   }
   assert {
-    condition     = length(prisma-airs_supply_chain_skill_scanning_override.example) == 1 && length(prisma-airs_supply_chain_skill_scanning_rule.policy) == 1 && length(data.prisma-airs_supply_chain_skill_scanning_attack_chains.selected) == 1 && length(data.prisma-airs_supply_chain_skill_scanning_scan.fingerprint) == 1
+    condition     = length(prisma-airs_supply_chain_skill_scanning_override.example) == 1 && length(prisma-airs_supply_chain_skill_scanning_rule.policy) == 1 && length(data.prisma-airs_supply_chain_skill_scanning_attack_chains.selected) == 1 && length(data.prisma-airs_supply_chain_skill_scanning_scan.fingerprint) == 1 && output.trust_override_matches == 1
     error_message = "Enabled policy and existing-result lessons must build their dependency graph."
   }
 }
@@ -89,4 +92,14 @@ run "reject_unversioned_authorization_code" {
     skill_auth_code = "mock-write-only-code"
   }
   expect_failures = [var.skill_auth_code]
+}
+
+run "reject_lookups_without_skill_scanning" {
+  command = plan
+  variables {
+    skill_tenant_id            = "fixture-tenant"
+    skill_scan_uuid            = "22222222-2222-4222-8222-222222222222"
+    existing_skill_fingerprint = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  }
+  expect_failures = [var.skill_tenant_id, var.skill_scan_uuid, var.existing_skill_fingerprint]
 }

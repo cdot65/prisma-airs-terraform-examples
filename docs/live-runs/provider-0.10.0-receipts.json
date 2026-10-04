@@ -114,8 +114,8 @@
       "source_sha256": {
         "variables.tf": "4919a5ca9f93da5a10717cf98d22aef80092f9784f43220cde0e8c2fb348ef9f",
         "skill-discovery.tf": "03c0dda41404f0f1ed373b29296c272fecfbf5e1f580a08336d5843a11843f98",
-        "skill-variables.tf": "cd3acefee1a0032085ac254af912677e6599b1067d770a77d8d4c6416a629b81",
-        "skills.tf": "854f052103f0ddb2e842e58a9356a7401232b6dd69951ea22f3cfbf8c75b77a9",
+        "skill-variables.tf": "b7d61989a83cbf4009eb2aff3317bcf274adc6d2036dd09c971ad0c99662733a",
+        "skills.tf": "435864fb96a5918f338e084194e28db8449eadeda62699ac4e70c00da9aeea67",
         "skill-instance.tf": "218d8dac4d3b7377b298c85973ec8ea535aecabfcc8dc26683fcecdd75c3b395",
         "main.tf": "8c2997287f4feb90cbf27601d3a588f823e48ad8208270fadcd48de48d4bb147"
       },
@@ -153,7 +153,7 @@
         "enable_skill_history": true
       },
       "runtime_checks": {},
-      "timestamp": "2026-10-04T04:03:51Z",
+      "timestamp": "2026-10-04T04:35:03Z",
       "destroy_complete": true,
       "managed_state_empty": true,
       "variant": "model-and-skill",
@@ -562,6 +562,14 @@
       },
       {
         "project": "ai-gateway",
+        "type": "prisma-airs_runtime_security_profile",
+        "outcome": "absent",
+        "inventory_complete": true,
+        "verification": "Complete Runtime profile inventory, including all revisions, contains no exact owned profile name.",
+        "variant": "gateway-managed-workspace"
+      },
+      {
+        "project": "ai-gateway",
         "type": "prisma-airs_gateway_config",
         "outcome": "absent"
       },
@@ -684,6 +692,14 @@
         "project": "ai-gateway",
         "type": "prisma-airs_gateway_user_api_key",
         "outcome": "absent"
+      },
+      {
+        "project": "ai-gateway",
+        "type": "prisma-airs_runtime_security_profile",
+        "outcome": "absent",
+        "inventory_complete": true,
+        "verification": "Complete Runtime profile inventory, including all revisions, contains no exact owned profile name.",
+        "variant": "gateway-existing-workspace-full-platform"
       },
       {
         "project": "ai-red-teaming",

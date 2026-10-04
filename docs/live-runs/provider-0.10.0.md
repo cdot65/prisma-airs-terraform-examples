@@ -1,6 +1,6 @@
 # Provider 0.10.0 live run
 
-These runs used the signed Registry provider `cdot65/prisma-airs` **0.10.0**, Terraform **1.16.4**, and an authorized test tenant on **2026-10-04**. Management and upstream credentials were supplied through environment variables. This is recorded evidence; the [product guides](../../README.md#examples) explain how to get started.
+These runs used the signed Registry provider `cdot65/prisma-airs` **0.10.0**, Terraform **1.16.4**, and an authorized test tenant on **2026-10-04**. Management and upstream credentials were supplied through environment variables. This is recorded evidence; the [product guides](../../README.md#get-started) explain how to get started.
 
 Tenant/resource identifiers, endpoints, and returned model names are sanitized. No credentials, saved plans, state, or raw API responses are published. [Machine-readable receipts](provider-0.10.0-receipts.json) record exact SHA-256 hashes of every tested root's `.tf` files, update actions, enabled feature selectors, read data-source families, and runtime results.
 

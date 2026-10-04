@@ -4,3 +4,8 @@ description_suffix = "initial"
 
 # Policy: Block requests matching the confidential-information topic.
 topic_action = "block"
+
+# Access: Discovery and key creation are optional; read the guide before enabling.
+enable_runtime_discovery = false
+create_scanning_key      = false
+# Set deployment_profile_name only for key creation; import an unrelated app separately.

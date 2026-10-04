@@ -71,7 +71,7 @@ Examples create their own named configuration and reference external application
 
 Terraform files use short `# Concept: purpose` comments at concept boundaries and multiline objects for nested configuration. Keep comments focused on dependencies and product behavior; variable descriptions explain individual inputs.
 
-Run `python3 scripts/validate.py` to check formatting, Registry installation, provider schema validation, 16 mocked Terraform feature plans, complete release coverage, and request-helper tests without tenant credentials. An optional [GitHub Actions template](ci/README.md) runs the per-project Terraform checks in CI; run the full script for coverage and Python tests. Recorded live results and their limits are in [validation documentation](docs/validation.md); short sanitized output excerpts appear in the guides.
+Run `python3 scripts/validate.py` to check formatting, Registry installation, provider schema validation, 17 mocked Terraform feature tests, complete release coverage, documentation links/evidence hashes, and request-helper tests without tenant credentials. An optional [GitHub Actions template](ci/README.md) runs the per-project Terraform checks in CI; run the full script for coverage and Python tests. Recorded live results and their limits are in [validation documentation](docs/validation.md); short sanitized output excerpts appear in the guides.
 
 [Upgrading existing examples](docs/upgrading.md) explains the new release pins and optional controls. Historical provider 0.9.0 run evidence remains explicitly labeled; fresh provider 0.10.0 runs are recorded separately.
 

@@ -4,15 +4,7 @@
 
 The [2026-10-04 live runs](live-runs/provider-0.10.0.md) and [exact source receipts](live-runs/provider-0.10.0-receipts.json) cover the current examples. The signed Registry provider is pinned to 0.10.0. All 26 resources and 27 data sources appear in the [schema-checked coverage table](resource-coverage.md); shared-rule adoption and tenant onboarding remain protected, optional lessons.
 
-Local validation passes four locked Terraform roots, **13 mock Terraform feature plans**, and **13 Python helper tests**, without tenant access. Fresh live runs cover all four products and both Gateway workspace paths, followed by independent cleanup queries. See the current release report for precise operation limits.
-
-## Historical provider 0.9.0 evidence
-
-## Current release: provider 0.10.0
-
-The [2026-10-04 live runs](live-runs/provider-0.10.0.md) and [exact source receipts](live-runs/provider-0.10.0-receipts.json) cover the current examples. The signed Registry provider is pinned to 0.10.0. All 26 resources and 27 data sources appear in the [schema-checked coverage table](resource-coverage.md); shared-rule adoption and tenant onboarding remain protected, optional lessons.
-
-Local validation passes four locked Terraform roots, **16 mock Terraform feature plans**, and **13 Python helper tests**, without tenant access. Fresh live runs cover all four products and both Gateway workspace paths, followed by independent cleanup queries. See the current release report for precise operation limits.
+Local validation passes four locked Terraform roots, **17 mock Terraform feature tests**, and **13 Python helper tests**, without tenant access. Fresh live runs cover all four products and both Gateway workspace paths, followed by independent cleanup queries. See the current release report for precise operation limits.
 
 ## Historical provider 0.9.0 evidence
 
@@ -47,7 +39,7 @@ Public excerpts omit progress details and replace identifiers, endpoints, and mo
 
 ## Local validation
 
-`python3 scripts/validate.py` checks formatting, locked provider installation, schema validation, mock feature plans for all four projects, release coverage, and Python helper tests without tenant access or remote writes. The optional CI matrix performs the per-project Terraform checks; it does not run the coverage gate or Python test suite and does not reproduce live lifecycle evidence.
+`python3 scripts/validate.py` checks formatting, locked provider installation, schema validation, mock feature tests for all four projects, release coverage, and Python helper tests without tenant access or remote writes. The optional CI matrix performs the per-project Terraform checks; it does not run the coverage gate or Python test suite and does not reproduce live lifecycle evidence.
 
 ## Post-review MCP regression check
 

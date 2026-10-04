@@ -31,6 +31,7 @@ def main():
             subprocess.run(["terraform", "validate", "-no-color"], cwd=example, env=environment, check=True)
             subprocess.run(["terraform", "test", "-no-color"], cwd=example, env=environment, check=True)
         subprocess.run([sys.executable, "scripts/coverage.py"], cwd=root, env=environment, check=True)
+        subprocess.run([sys.executable, "scripts/check_docs.py"], cwd=root, env=environment, check=True)
         subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", "tests"], cwd=root, env=environment, check=True)
 
 

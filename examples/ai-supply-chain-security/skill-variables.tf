@@ -50,18 +50,33 @@ variable "skill_tenant_id" {
   description = "Optional tenant ID for read-only registration lookup; requires instance-read access."
   type        = string
   default     = null
+
+  validation {
+    condition     = var.skill_tenant_id == null || var.enable_skill_scanning
+    error_message = "Enable Skill Scanning before using skill_tenant_id for an existing-object lookup."
+  }
 }
 
 variable "skill_scan_uuid" {
   description = "Optional existing scan UUID for detail, vulnerability, and attack-chain reads."
   type        = string
   default     = null
+
+  validation {
+    condition     = var.skill_scan_uuid == null || var.enable_skill_scanning
+    error_message = "Enable Skill Scanning before using skill_scan_uuid for an existing-object lookup."
+  }
 }
 
 variable "existing_skill_fingerprint" {
   description = "Optional lowercase SHA-256 fingerprint of an already scanned skill."
   type        = string
   default     = null
+
+  validation {
+    condition     = var.existing_skill_fingerprint == null || var.enable_skill_scanning
+    error_message = "Enable Skill Scanning before using existing_skill_fingerprint for an existing-object lookup."
+  }
 
   validation {
     condition     = var.existing_skill_fingerprint == null ? true : can(regex("^[0-9a-f]{64}$", var.existing_skill_fingerprint))

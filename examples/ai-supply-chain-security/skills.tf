@@ -17,6 +17,7 @@ resource "prisma-airs_supply_chain_skill_scanning_override" "example" {
 }
 
 data "prisma-airs_supply_chain_skill_scanning_overrides" "owned" {
+  depends_on  = [prisma-airs_supply_chain_skill_scanning_override.example]
   count       = var.enable_skill_scanning ? 1 : 0
   fingerprint = prisma-airs_supply_chain_skill_scanning_override.example[0].fingerprint
 }
@@ -35,6 +36,12 @@ output "skill_rule_count" {
 output "effective_skill_rule_count" {
   description = "Returned effective rule settings; null when the native list is unavailable."
   value       = var.enable_skill_scanning ? try(length(data.prisma-airs_supply_chain_skill_scanning_rule_instances.effective[0].result.rule_instances), null) : null
+}
+
+# Verification: Publish only the matching row count; retain sensitive native records in state.
+output "trust_override_matches" {
+  description = "Overrides returned for the owned synthetic fingerprint; null when unavailable."
+  value       = var.enable_skill_scanning ? nonsensitive(try(length(data.prisma-airs_supply_chain_skill_scanning_overrides.owned[0].result.skill_overrides), null)) : null
 }
 
 output "trust_fingerprint" {
