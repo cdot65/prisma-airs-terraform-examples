@@ -1,0 +1,14 @@
+# Identity: Use an unused prefix before the first apply.
+name_prefix = "tf-redteam-adapter-yourname"
+
+# Execution: Save a draft before opting into broker execution.
+activate = false
+# network_broker_channel_uuid = "<existing-online-channel-uuid>"
+
+# Variables: This starter script needs no model-service credentials.
+adapter_variables = {
+  message = {
+    type  = "VAR"
+    value = "Terraform adapter is reachable"
+  }
+}
