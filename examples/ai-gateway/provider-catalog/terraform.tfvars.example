@@ -1,0 +1,12 @@
+# Identity: Use an existing workspace and an unused resource prefix.
+workspace_id = "existing-workspace-uuid"
+name_prefix  = "tf-catalog-chat"
+
+# Models: Use API IDs enabled on your Gateway integrations.
+models = {
+  open-ai   = "gpt-4.1"
+  anthropic = "claude-opus-4-6"
+}
+
+# Discovery: Terraform resolves provider-family UUIDs; no UUID input is needed.
+# Credentials: Load TF_VAR_upstream_api_keys with open-ai and anthropic entries.

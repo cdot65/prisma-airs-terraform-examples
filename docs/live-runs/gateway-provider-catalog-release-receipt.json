@@ -1,0 +1,28 @@
+{
+  "recorded_at": "2026-10-04T17:25:11.475367+00:00",
+  "terraform_version": "1.16.4",
+  "provider_version": "0.11.0",
+  "provider_source_commit": "2f68f8697e19628dfccf1082b528db09436d1f6d",
+  "installation": "Terraform Registry, normal init, publisher signature verified by Terraform",
+  "provider_binary_sha256": "c9bf2ed140322dbcc4dd6668ff8bfee1d2b561af3d60fa18d3ee76ee408009f0",
+  "source_sha256": {
+    "examples/ai-gateway/provider-catalog/discovery/main.tf": "b8dbfe24087d27760e10b8972a3a3a7de2de474e091865b8e34ce0c3b6c6a078"
+  },
+  "transcript_sha256": "e0ddcab9978b426cb510721eed4a1223e37d3f3b7760237f9753599fe31a8629",
+  "catalog_counts": {
+    "active": 79,
+    "returned": 81
+  },
+  "selected_slugs": [
+    "anthropic",
+    "open-ai"
+  ],
+  "distinct_provider_uuid_values": true,
+  "unchanged_plan_exit_code": 0,
+  "managed_resources_added": 0,
+  "managed_resources_destroyed": 0,
+  "remaining_state_entries": 0,
+  "live_model_requests": 0,
+  "sanitized": true,
+  "sanitization": "Provider-family UUIDs and private local paths replaced with labeled placeholders. Actual text, counts, provider signature statement and timings retained."
+}

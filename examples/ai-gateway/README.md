@@ -4,6 +4,10 @@ Build a governed AI application in an existing Gateway workspace. This project c
 
 Four saved routing policies teach fallback/retry, weighted balancing, conditional routing, and simple caching. Optional features cover external secret references, developer keys, MCP, hybrid deployment registration, and organization guardrails in the same Terraform root.
 
+## Discover upstream provider IDs
+
+For OpenAI GPT and Anthropic Claude Opus connections selected by readable catalog slug, start with the [provider catalog example](provider-catalog/README.md). It discovers provider-family UUIDs inside Terraform; no manual UUID input is needed. That example pins provider 0.11.0 and installs directly from the Terraform Registry. The expanded project below remains the published 0.10.0 compatibility configuration.
+
 ## Before you start
 
 You need:
@@ -28,18 +32,19 @@ Edit the nonsecret input file:
 | --- | --- |
 | `name_prefix` | An unused lowercase prefix, 3–40 characters; keep it stable |
 | `workspace_id` | Existing workspace UUID, omitted when `create_workspace = true` |
-| `upstreams` | Named connections with provider-family UUIDs from the catalog |
+| `upstreams` | Legacy 0.10.0 connection inputs; use the catalog example above for automatic UUID discovery |
 | `primary_upstream` | Name of the primary connection |
 | `primary_model` | Primary model enabled on that connection |
 | `secondary_model` | Second model on the same service by default |
 | `secondary_upstream` | Optional different connection for the second model |
 
-For discovery, use SCM or these AIRS CLI commands with your tenant selected:
+For this legacy 0.10.0 project, locate the existing workspace with your tenant selected:
 
 ```bash
 airs cli aigateway workspaces list
-airs cli aigateway integrations providers
 ```
+
+Provider-family discovery for new projects is demonstrated in the [catalog example](provider-catalog/README.md); prefer that workflow over copying UUIDs.
 
 Load `TF_VAR_upstream_api_keys` from your credential store as a JSON map keyed by the names in `upstreams`. Each connection needs its own value, even if two connections use the same account. Do not store this map in `terraform.tfvars`. For the sample `openai` connection, the environment variable contains this JSON shape (replace the placeholder through your credential store):
 
