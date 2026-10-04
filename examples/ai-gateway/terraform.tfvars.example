@@ -16,3 +16,7 @@ secondary_model  = "gpt-4.1-mini"
 
 # Credentials: Load TF_VAR_upstream_api_keys as JSON through your credential store.
 # Optional features: Read platform.md before enabling additional resources.
+
+# Workspace: Existing access is the default; see README to create a dedicated workspace.
+create_workspace          = false
+enable_platform_discovery = false

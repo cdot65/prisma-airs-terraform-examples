@@ -8,7 +8,7 @@ Four saved routing policies teach fallback/retry, weighted balancing, conditiona
 
 You need:
 
-- Terraform 1.9 or later, before 2.0. The root pins provider 0.9.0.
+- Terraform 1.11 or later, before 2.0. The root pins provider 0.10.0.
 - The three [management environment variables](../../README.md#get-started), with Gateway and Runtime Security management access.
 - An existing Gateway workspace UUID and a connected Gateway inference deployment.
 - Usable upstream credentials and two routing targets: different models, different services, or separate connections to the same service.
@@ -27,7 +27,7 @@ Edit the nonsecret input file:
 | Input | What to supply |
 | --- | --- |
 | `name_prefix` | An unused lowercase prefix, 3–40 characters; keep it stable |
-| `workspace_id` | Existing workspace UUID |
+| `workspace_id` | Existing workspace UUID, omitted when `create_workspace = true` |
 | `upstreams` | Named connections with provider-family UUIDs from the catalog |
 | `primary_upstream` | Name of the primary connection |
 | `primary_model` | Primary model enabled on that connection |
@@ -55,6 +55,29 @@ For an OpenAI-compatible custom service, load `TF_VAR_upstream_configurations` a
 
 For the standard OpenAI service, leave `upstream_configurations` at its empty default.
 
+## Own a workspace
+
+The default uses an existing workspace. To demonstrate provider 0.10.0 workspace management, remove `workspace_id` from your input file and set:
+
+```hcl
+# Workspace: Own a new workspace and its dedicated IAM scope.
+create_workspace           = true
+workspace_scope_name       = "tf_gateway_yourname"
+workspace_scope_management = "managed"
+```
+
+Use an unused scope name and an account with Gateway admin, IAM permissions, and the necessary existing role grants. Scope binding associates the workspace slug; it does not grant roles or install Gateway infrastructure. All child resources use the selected UUID, so Terraform cleans them before archiving the workspace and confirming deletion of the owned scope.
+
+For a preexisting external scope, set `workspace_scope_management = "external"`. Its owner must maintain bindings and grants; Terraform makes no IAM writes. Never switch an existing state between workspace modes as an upgrade shortcut: first review the planned replacements and cleanup.
+
+Supply `workspace_default_metadata` with the keys and values permitted by your tenant's Gateway metadata schema, including every required property. Load that map from the environment as `TF_VAR_workspace_default_metadata`, or use nonsecret sample inputs. Use `{}` only when the tenant permits empty metadata. Arbitrary keys or missing required properties produce HTTP 400; there is no universal valid metadata object.
+
+Optional `workspace_rate_limits` owns the entire workspace rate collection. Removing previously configured limits clears them. The application already manages its token budget; do not create a second inline workspace usage policy, because the service permits one usage policy per workspace. Do not make workspace defaults reference a child config during creation, which would form a dependency cycle.
+
+`workspace` reports the selected UUID, slug, ownership, and inventory completeness. An omitted API pagination flag makes completeness false; matching list rows cannot establish exclusive scope ownership. `enable_platform_discovery = true` adds read-only pages for every Gateway metadata family, with their corresponding access requirements.
+
+For import, recovery after partial failures, and managed/external cleanup, use the [workspace guide](https://cdot65.github.io/terraform-provider-prisma-airs/resources/gateway-workspace/). Preserve state checkpoints; verify the exact workspace and dedicated scope before adopting either.
+
 ## Apply
 
 ```bash
@@ -68,7 +91,7 @@ With one upstream and optional features disabled, the root creates **16 resource
 
 `routing` reports each policy's IDs and version. `application_keys` holds the four sensitive, one-time application credentials; the request helpers read these from state without printing them. Protect state and saved plans. Every key selects its saved config and disallows config overrides.
 
-Model enablement and custom-model registration are outside provider 0.9.0. Check model access in SCM after creating an integration, and enable/register models there where your provider requires it. A successful apply does not establish upstream connectivity.
+Model enablement and custom-model registration are outside provider 0.10.0. Check model access in SCM after creating an integration, and enable/register models there where your provider requires it. A successful apply does not establish upstream connectivity.
 
 ## Send your first request
 
@@ -99,7 +122,7 @@ fallback: default.contains denied probe (HTTP 446)
 fallback: panw-prisma-airs.intercept denied probe (HTTP 446)
 ```
 
-See [current run evidence](../../docs/live-runs/ai-gateway-expanded.md) for the configuration and request behaviors actually tested. The [earlier two-resource run](../../docs/live-runs/ai-gateway.md) is historical evidence for the original basic example.
+See [historical provider 0.9.0 run evidence](../../docs/live-runs/ai-gateway-expanded.md) for the configuration and request behaviors actually tested. The [earlier two-resource run](../../docs/live-runs/ai-gateway.md) is historical evidence for the original basic example.
 
 ## Explore routing
 
@@ -148,3 +171,7 @@ Destroy removes the owned keys, controls, providers, and integration bindings. I
 | Optional feature fails | Its prerequisites and supported ownership boundary in [platform.md](platform.md) |
 
 [Provider Gateway workflow](https://cdot65.github.io/terraform-provider-prisma-airs/guides/gateway-workflow/) · [Validation details](../../docs/validation.md)
+
+[Provider 0.10.0 live evidence](../../docs/live-runs/provider-0.10.0.md) · [Complete release coverage](../../docs/resource-coverage.md)
+
+A developer user key requires `developer_user_id` to identify an existing member of the selected workspace. A newly created workspace needs membership and access grants arranged outside this provider before enabling that key.
