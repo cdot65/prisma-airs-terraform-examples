@@ -57,6 +57,18 @@ def main():
         missing = set(run["managed_resource_types"]) - checked
         if missing:
             errors.append(f"{run['variant']}: missing independent cleanup types {sorted(missing)}")
+    for stem, extension in [("gateway-provider-catalog", ".txt"), ("gateway-existing-models", ".md")]:
+        live_receipt = ROOT / f"docs/live-runs/{stem}-receipt.json"
+        if not live_receipt.is_file():
+            continue
+        evidence = json.loads(live_receipt.read_text())
+        for relative, expected_hash in evidence["source_sha256"].items():
+            source = ROOT / relative
+            if not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != expected_hash:
+                errors.append(f"{stem}: live source differs from its captured hash: {relative}")
+        transcript = ROOT / f"docs/live-runs/{stem}{extension}"
+        if not transcript.is_file() or hashlib.sha256(transcript.read_bytes()).hexdigest() != evidence["transcript_sha256"]:
+            errors.append(f"{stem}: live transcript differs from its recorded hash")
     if errors:
         raise SystemExit("\n".join(errors))
     print(f"Checked {len(paths)} Markdown files/heading targets, {runs} mock test runs, and {len(receipt['runs'])} live source hash sets and cleanup type coverage.")

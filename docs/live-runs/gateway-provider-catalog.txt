@@ -1,0 +1,102 @@
+# Actual Terraform CLI output; provider UUIDs and local paths sanitized.
+# Executed against an isolated copy of: examples/ai-gateway/provider-catalog/discovery/main.tf
+
+$ terraform apply -auto-approve -no-color
+
+Warning: Provider development overrides are in effect
+
+The following provider development overrides are set in the CLI
+configuration:
+ - cdot65/prisma-airs in <local-provider-build>
+
+The behavior may therefore not match any released version of the provider and
+applying changes may cause the state to become incompatible with published
+releases.
+data.prisma-airs_gateway_ai_providers.catalog: Reading...
+data.prisma-airs_gateway_ai_providers.catalog: Read complete after 3s
+
+Changes to Outputs:
+  + catalog_counts      = {
+      + active   = 79
+      + returned = 81
+    }
+  + provider_family_ids = {
+      + anthropic = "<anthropic-provider-family-uuid>"
+      + open-ai   = "<openai-provider-family-uuid>"
+    }
+
+You can apply this plan to save these new output values to the Terraform
+state, without changing any real infrastructure.
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+catalog_counts = {
+  "active" = 79
+  "returned" = 81
+}
+provider_family_ids = {
+  "anthropic" = "<anthropic-provider-family-uuid>"
+  "open-ai" = "<openai-provider-family-uuid>"
+}
+
+$ terraform output -no-color
+catalog_counts = {
+  "active" = 79
+  "returned" = 81
+}
+provider_family_ids = {
+  "anthropic" = "<anthropic-provider-family-uuid>"
+  "open-ai" = "<openai-provider-family-uuid>"
+}
+
+$ terraform plan -out=unchanged.tfplan -detailed-exitcode -no-color
+
+Warning: Provider development overrides are in effect
+
+The following provider development overrides are set in the CLI
+configuration:
+ - cdot65/prisma-airs in <local-provider-build>
+
+The behavior may therefore not match any released version of the provider and
+applying changes may cause the state to become incompatible with published
+releases.
+data.prisma-airs_gateway_ai_providers.catalog: Reading...
+data.prisma-airs_gateway_ai_providers.catalog: Read complete after 0s
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+
+$ terraform destroy -auto-approve -no-color
+
+Warning: Provider development overrides are in effect
+
+The following provider development overrides are set in the CLI
+configuration:
+ - cdot65/prisma-airs in <local-provider-build>
+
+The behavior may therefore not match any released version of the provider and
+applying changes may cause the state to become incompatible with published
+releases.
+data.prisma-airs_gateway_ai_providers.catalog: Reading...
+data.prisma-airs_gateway_ai_providers.catalog: Read complete after 0s
+
+Changes to Outputs:
+  - catalog_counts      = {
+      - active   = 79
+      - returned = 81
+    } -> null
+  - provider_family_ids = {
+      - anthropic = "<anthropic-provider-family-uuid>"
+      - open-ai   = "<openai-provider-family-uuid>"
+    } -> null
+
+You can apply this plan to save these new output values to the Terraform
+state, without changing any real infrastructure.
+
+Destroy complete! Resources: 0 destroyed.
+
+$ terraform state list

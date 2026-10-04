@@ -36,6 +36,42 @@ export TF_CLI_CONFIG_FILE=/absolute/path/to/dev.tfrc
 
 Until release, skip `terraform init`: the development override loads the local binary directly, bypassing Registry version selection. Once the feature is published, pin its exact version, remove the override, and initialize normally. The current constraint excludes Registry 0.10.0; it does not claim a later release already exists.
 
+## See real discovery output
+
+With the development override and management environment variables selected, run the read-only configuration before creating connections:
+
+```bash
+terraform -chdir=discovery apply
+terraform -chdir=discovery output -no-color
+```
+
+This uses [discovery/main.tf](discovery/main.tf) and requires no upstream API keys. The following is actual Terraform output captured from the test tenant on 2026-10-04; only UUID values are replaced with labeled placeholders:
+
+```text
+catalog_counts = {
+  "active" = 79
+  "returned" = 81
+}
+provider_family_ids = {
+  "anthropic" = "<anthropic-provider-family-uuid>"
+  "open-ai" = "<openai-provider-family-uuid>"
+}
+```
+
+The recorded apply reported:
+
+```text
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+```
+
+These UUIDs came from the live catalog, not mock fixtures. Terraform stored read-only data and outputs without creating upstream integrations. Use `data.prisma-airs_gateway_ai_providers.catalog.ids_by_slug["open-ai"]` or `["anthropic"]` directly when creating your own connections, as the parent configuration does.
+
+The [full CLI transcript](../../../docs/live-runs/gateway-provider-catalog.txt) includes the actual apply, output, unchanged plan, and cleanup; its [receipt](../../../docs/live-runs/gateway-provider-catalog-receipt.json) records the tested source hash and provider build. Local paths and UUIDs are sanitized. Clean up this read-only state's outputs when finished:
+
+```bash
+terraform -chdir=discovery destroy
+```
+
 ## Configure both models
 
 From this directory:
@@ -102,6 +138,22 @@ unset PANW_AI_GW_APP_KEY
 ```
 
 If you change `models`, update the request model ID to match. Each key selects its saved model route and disallows config overrides. Expect a successful HTTP response with assistant text; confirm the upstream/model in the response or Gateway logs. Missing models, billing/access problems, authentication failures, and upstream errors are failures, not successful demonstrations. These commands make billable model calls when run.
+
+## A real model response
+
+A supplemental run used `airs cli aigateway` to discover existing connections and Terraform to create temporary model routes and application keys. Its standard OpenAI connection returned this actual response excerpt:
+
+```json
+{
+  "model": "gpt-4.1-2025-04-14",
+  "choices": [{"message": {"content": "Hello!", "role": "assistant"}}],
+  "usage": {"completion_tokens": 2, "prompt_tokens": 13, "total_tokens": 15}
+}
+```
+
+This is an excerpt of [the full recorded response](../../../docs/live-runs/gateway-existing-models.md#openai-gpt), not a complete response schema or a mock. That run reused a configured OpenAI integration; it did not apply this lesson's ten-resource project that creates new upstream connections.
+
+Claude Opus requests through the tenant's existing Vertex and Bedrock connections returned upstream authentication errors (HTTP 401 and 403). There was no direct Anthropic connection, so a successful Claude response is **not yet verified**. The [actual errors and cleanup results](../../../docs/live-runs/gateway-existing-models.md#claude-opus-actual-upstream-failures) show what happened. Your own valid Anthropic API credentials remain a prerequisite for the direct Claude route above.
 
 ## Change and clean up
 

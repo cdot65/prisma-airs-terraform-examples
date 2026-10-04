@@ -35,6 +35,7 @@ def main():
             raise SystemExit("Format the catalog lesson's sample inputs.")
         run("validate", "-no-color")
         run("test", "-no-color")
+        run("-chdir=discovery", "validate", "-no-color")
     print("Catalog lesson validated with a local provider and no live credentials.")
 
 

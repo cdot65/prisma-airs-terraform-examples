@@ -1,0 +1,83 @@
+{
+  "recorded_at": "2026-10-04T16:07:37.574411+00:00",
+  "terraform_version": "1.16.4",
+  "airs_cli_version": "0.1.2",
+  "provider_source_commit": "4462597b78916fd49b4973fb9ad900705bec3300",
+  "source_sha256": {
+    "docs/live-runs/gateway-existing-models-source.tf": "52ab2db4f2e3041f061b579af439299072aff3060ad05ebf58cfee754d7da0c0"
+  },
+  "transcript_sha256": "c24e590b946e7acf398d47832422829db39dd03dbeb381e88552b00f255f6bd4",
+  "trials": [
+    {
+      "label": "openai-and-vertex",
+      "requests": {
+        "claude": {
+          "exit_code": 1,
+          "requested_model": "claude-opus-4-6"
+        },
+        "gpt": {
+          "exit_code": 0,
+          "requested_model": "gpt-4.1",
+          "returned_model": "gpt-4.1-2025-04-14",
+          "assistant_text": "Hello!"
+        }
+      },
+      "managed_resources_added": 4,
+      "managed_resources_changed": 0,
+      "managed_resources_destroyed": 4,
+      "remaining_state_entries": 0
+    },
+    {
+      "label": "bedrock",
+      "requests": {
+        "claude": {
+          "exit_code": 1,
+          "requested_model": "global.anthropic.claude-opus-4-6-v1"
+        }
+      },
+      "managed_resources_added": 2,
+      "managed_resources_changed": 0,
+      "managed_resources_destroyed": 2,
+      "remaining_state_entries": 0
+    },
+    {
+      "label": "vertex-follow-up",
+      "requests": {
+        "claude": {
+          "exit_code": 1,
+          "requested_model": "claude-opus-4-6"
+        }
+      },
+      "managed_resources_added": 2,
+      "managed_resources_changed": 0,
+      "managed_resources_destroyed": 2,
+      "remaining_state_entries": 0
+    },
+    {
+      "label": "vertex-follow-up",
+      "requests": {
+        "claude": {
+          "exit_code": 1,
+          "requested_model": "claude-opus-4-6"
+        }
+      },
+      "managed_resources_added": 2,
+      "managed_resources_changed": 0,
+      "managed_resources_destroyed": 2,
+      "remaining_state_entries": 0
+    }
+  ],
+  "live_model_requests": 5,
+  "successful_model_requests": 1,
+  "owned_integration_project_applied": false,
+  "shared_credentials_modified": false,
+  "sanitized": true,
+  "sanitization": "Completion ID, system fingerprint, workspace-provider slug and upstream documentation URL replaced with labeled placeholders. Actual model IDs, response fields/counts and errors retained.",
+  "provider_build_note": "Gateway Go implementation matches this source commit. Documentation-only working-tree edits were present; an exact inference-run binary hash was not captured.",
+  "independent_cleanup": {
+    "checked_at": "2026-10-04T16:13:01.847463+00:00",
+    "tool": "airs cli aigateway configs get / api-keys service get",
+    "objects_checked": 10,
+    "confirmed_absent_http_404": 10
+  }
+}
