@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-04",
+  "provider": "development candidate based on 0.11.0; upcoming 0.12.0 unreleased",
+  "terraform": "1.16.4",
+  "source_sha256": {
+    "examples/ai-red-teaming/adapters/variables.tf": "18b54e210e7d6647a18ec5299f1f4c8d047a50bae565f642a8564edbdaa4d9ec",
+    "examples/ai-red-teaming/adapters/adapter.py": "6c19abcc8080c35f37418060cd20fc277bf6d24032ed914b2d50e5d5371b5e16",
+    "examples/ai-red-teaming/adapters/outputs.tf": "ce3b43a7984c110cf88e8d5255e6447ccfaafd51fbf8c24d64fb77b894ddf741",
+    "examples/ai-red-teaming/adapters/main.tf": "4da58b09693e1c6376a3b483dc673d425cbe388d79b6a20ccf1aee647a07033e"
+  },
+  "transcript_path": "examples/ai-red-teaming/adapters/live-run.md",
+  "transcript_sha256": "61d818c6df361bd8d47a3774fb401fac047cba542b0b5b9eb95000003bb87bee",
+  "draft_added": 1,
+  "activation_added": 1,
+  "no_op_exit_code": 0,
+  "destroyed": 2,
+  "live_adapter_execution": "succeeded",
+  "cleanup": "Terraform destroy succeeded; separate GET cleanup verification recorded privately"
+}

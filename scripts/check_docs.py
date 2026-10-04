@@ -70,6 +70,16 @@ def main():
         transcript = ROOT / f"docs/live-runs/{stem}{extension}"
         if not transcript.is_file() or hashlib.sha256(transcript.read_bytes()).hexdigest() != evidence["transcript_sha256"]:
             errors.append(f"{stem}: live transcript differs from its recorded hash")
+    adapter_receipt = ROOT / "docs/live-runs/red-team-adapters-receipt.json"
+    if adapter_receipt.is_file():
+        evidence = json.loads(adapter_receipt.read_text())
+        for relative, expected in evidence["source_sha256"].items():
+            source = ROOT / relative
+            if not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != expected:
+                errors.append(f"adapter lesson: recorded source hash differs: {relative}")
+        transcript = ROOT / evidence["transcript_path"]
+        if not transcript.is_file() or hashlib.sha256(transcript.read_bytes()).hexdigest() != evidence["transcript_sha256"]:
+            errors.append("adapter lesson: recorded transcript hash differs")
     if errors:
         raise SystemExit("\n".join(errors))
     print(f"Checked {len(paths)} Markdown files/heading targets, {runs} mock test runs, and {len(receipt['runs'])} live source hash sets and cleanup type coverage.")

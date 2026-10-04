@@ -2,6 +2,8 @@
 
 Register an authenticated application as a Red Team target and create a custom prompt-set container. Terraform manages the endpoint contract, request/response templates, authentication headers, and collection metadata.
 
+For adapter scripts, broker activation, UUID discovery, and importing redacted secrets, use the [adapter walkthrough](adapters/README.md).
+
 ## Before you start
 
 Install Terraform 1.11 or later, before 2.0, and load the three [management environment variables](../../README.md#get-started). Your service account needs Red Team management access. Provider 0.10.0 is pinned by this project.
