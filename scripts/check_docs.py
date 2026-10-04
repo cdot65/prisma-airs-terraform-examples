@@ -70,8 +70,10 @@ def main():
         transcript = ROOT / f"docs/live-runs/{stem}{extension}"
         if not transcript.is_file() or hashlib.sha256(transcript.read_bytes()).hexdigest() != evidence["transcript_sha256"]:
             errors.append(f"{stem}: live transcript differs from its recorded hash")
-    adapter_receipt = ROOT / "docs/live-runs/red-team-adapters-receipt.json"
-    if adapter_receipt.is_file():
+    for stem in ["red-team-adapters", "red-team-adapters-release"]:
+        adapter_receipt = ROOT / f"docs/live-runs/{stem}-receipt.json"
+        if not adapter_receipt.is_file():
+            continue
         evidence = json.loads(adapter_receipt.read_text())
         for relative, expected in evidence["source_sha256"].items():
             source = ROOT / relative

@@ -2,7 +2,7 @@
 
 Own a Python adapter and register an adapter-backed Red Team target. The starter script returns a deterministic text response through Network Broker; it teaches connectivity and Terraform dependencies without an upstream model key. Replace `call_target` with your application's call before preparing a real assessment.
 
-This project targets the upcoming provider 0.12.0. It is not installable from the Registry until that release is published; current validation uses the development build. The released parent Red Team project remains available separately.
+This project pins published Registry provider **0.12.0**. The parent Red Team project retains its separately validated compatibility pin.
 
 ## Save a draft
 
@@ -63,4 +63,4 @@ Terraform removes the dependent target first, then the adapter. It leaves the ex
 
 ## Recorded run
 
-See [live-run.md](live-run.md) for real sanitized development-build output, execution results, and the scope of validation.
+See [released-live-run.md](released-live-run.md) for real sanitized Registry-provider output, execution results, and independent cleanup. The earlier [development run](live-run.md) remains recorded separately.
