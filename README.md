@@ -9,9 +9,9 @@ Configure Prisma AIRS with ready-to-run Terraform projects using the [Prisma AIR
 | [AI Gateway](examples/ai-gateway/README.md) | Existing or owned workspace with dedicated IAM scope, model connections, four routing lessons, AIRS guardrails, application keys, request/token policies, and optional platform capabilities |
 | [AI Supply Chain Security](examples/ai-supply-chain-security/README.md) | A Model Security group, Skill Scanning catalogs, synthetic trust, optional shared policy/onboarding, and existing scan discovery |
 
-The [OpenAI GPT and Claude Opus catalog lesson](examples/ai-gateway/provider-catalog/README.md) demonstrates automatic provider-family UUID discovery. It requires the catalog-capable development provider until that feature is released; the four product roots below continue to target published 0.10.0.
+The [OpenAI GPT and Claude Opus catalog lesson](examples/ai-gateway/provider-catalog/README.md) demonstrates automatic provider-family UUID discovery. It pins Registry provider **0.11.0**; the four product roots below retain their tested 0.10.0 compatibility pins.
 
-Each directory is an independent Terraform root with its own state. Start with one product; you do not need to apply all four. The examples pin published provider **0.10.0** and require Terraform **1.11 or later**, before 2.0. Terraform 1.11 enables the Skill Scanning write-only authorization code; its input variable is ephemeral. [Release coverage](docs/resource-coverage.md) maps all 26 resources and 27 data sources to runnable configuration, including optional and import-only lessons.
+Each directory is an independent Terraform root with its own state. Start with one product; you do not need to apply all four. The four product roots pin published provider **0.10.0** and require Terraform **1.11 or later**, before 2.0. Terraform 1.11 enables the Skill Scanning write-only authorization code; its input variable is ephemeral. [Release coverage](docs/resource-coverage.md) maps all 26 resources and 27 data sources to runnable configuration, including optional and import-only lessons.
 
 ## Get started
 
@@ -75,7 +75,7 @@ Terraform files use short `# Concept: purpose` comments at concept boundaries an
 
 Run `python3 scripts/validate.py` to check formatting, Registry installation, provider schema validation, 17 mocked Terraform feature tests, complete release coverage, documentation links/evidence hashes, and request-helper tests without tenant credentials. An optional [GitHub Actions template](ci/README.md) runs the per-project Terraform checks in CI; run the full script for coverage and Python tests. Recorded live results and their limits are in [validation documentation](docs/validation.md); short sanitized output excerpts appear in the guides.
 
-Check the pending catalog lesson separately with `python3 scripts/validate-catalog.py --provider-dir /absolute/path/to/terraform-provider-prisma-airs`. Its [validation notes](examples/ai-gateway/provider-catalog/validation.md) distinguish live catalog discovery, a real GPT request through an existing connection, Claude authentication failures, and mocked owned-integration checks.
+Check the catalog lesson separately with `python3 scripts/validate-catalog.py`. Its [validation notes](examples/ai-gateway/provider-catalog/validation.md) distinguish live catalog discovery, a real GPT request through an existing connection, Claude authentication failures, and mocked owned-integration checks.
 
 [Upgrading existing examples](docs/upgrading.md) explains the new release pins and optional controls. Historical provider 0.9.0 run evidence remains explicitly labeled; fresh provider 0.10.0 runs are recorded separately.
 

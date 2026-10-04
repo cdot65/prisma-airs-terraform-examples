@@ -4,48 +4,23 @@ Build two model connections in an existing Gateway workspace. Terraform reads th
 
 ## Before you start
 
-**This example requires the new catalog-capable provider build, pending release. Registry provider 0.10.0 does not support this data source.** The [released expanded project](../README.md) remains available for 0.10.0; this focused example demonstrates the replacement discovery workflow.
+This example pins provider **0.11.0**, which includes automatic provider-family discovery. Install it from the Terraform Registry with `terraform init`; no local provider build is required. The [expanded project](../README.md) retains its provider 0.10.0 compatibility configuration.
 
 You need Terraform 1.11+, the [management environment variables](../../../README.md#get-started), an existing Gateway workspace with an inference deployment, and OpenAI and Anthropic API credentials. ChatGPT subscription access does not supply an OpenAI API credential. The sample uses the API model IDs `gpt-4.1` and `claude-opus-4-6`; choose alternatives if your account or Gateway has different models enabled. See [OpenAI's model reference](https://developers.openai.com/api/docs/models/gpt-4.1) and [Claude model IDs](https://platform.claude.com/docs/en/about-claude/models/model-ids-and-versions).
 
-For this development setup, install Go 1.25.6+ and `make`, then build the catalog-capable provider branch:
-
-```bash
-git clone --branch feat/gateway-provider-catalog https://github.com/cdot65/terraform-provider-prisma-airs.git
-cd terraform-provider-prisma-airs
-make build
-```
-
-Create `dev.tfrc` outside this example, replacing the path with the absolute directory containing the binary:
-
-```hcl
-# Development install: Load the catalog-capable provider binary.
-provider_installation {
-  dev_overrides {
-    "cdot65/prisma-airs" = "/absolute/path/to/terraform-provider-prisma-airs"
-  }
-  direct {}
-}
-```
-
-Select it in the shell used for Terraform:
-
-```bash
-export TF_CLI_CONFIG_FILE=/absolute/path/to/dev.tfrc
-```
-
-Until release, skip `terraform init`: the development override loads the local binary directly, bypassing Registry version selection. Once the feature is published, pin its exact version, remove the override, and initialize normally. The current constraint excludes Registry 0.10.0; it does not claim a later release already exists.
+If you previously used a development override, remove it from your Terraform CLI configuration before installing the Registry provider.
 
 ## See real discovery output
 
-With the development override and management environment variables selected, run the read-only configuration before creating connections:
+With management environment variables loaded, run the read-only configuration before creating connections:
 
 ```bash
+terraform -chdir=discovery init
 terraform -chdir=discovery apply
 terraform -chdir=discovery output -no-color
 ```
 
-This uses [discovery/main.tf](discovery/main.tf) and requires no upstream API keys. The following is actual Terraform output captured from the test tenant on 2026-10-04; only UUID values are replaced with labeled placeholders:
+This uses [discovery/main.tf](discovery/main.tf) and requires no upstream API keys. The following is actual Terraform output captured from the test tenant with signed Registry provider 0.11.0 on 2026-10-04; only UUID values are replaced with labeled placeholders:
 
 ```text
 catalog_counts = {
@@ -66,7 +41,7 @@ Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
 
 These UUIDs came from the live catalog, not mock fixtures. Terraform stored read-only data and outputs without creating upstream integrations. Use `data.prisma-airs_gateway_ai_providers.catalog.ids_by_slug["open-ai"]` or `["anthropic"]` directly when creating your own connections, as the parent configuration does.
 
-The [full CLI transcript](../../../docs/live-runs/gateway-provider-catalog.txt) includes the actual apply, output, unchanged plan, and cleanup; its [receipt](../../../docs/live-runs/gateway-provider-catalog-receipt.json) records the tested source hash and provider build. Local paths and UUIDs are sanitized. Clean up this read-only state's outputs when finished:
+The [full CLI transcript](../../../docs/live-runs/gateway-provider-catalog-release.txt) includes the actual apply, output, unchanged plan, and cleanup; its [receipt](../../../docs/live-runs/gateway-provider-catalog-release-receipt.json) records the tested source hash and provider build. Local paths and UUIDs are sanitized. Clean up this read-only state's outputs when finished:
 
 ```bash
 terraform -chdir=discovery destroy
@@ -93,6 +68,7 @@ Keep actual keys out of input files and terminal output. The keys are upstream A
 ## Apply
 
 ```bash
+terraform init
 terraform validate
 terraform plan -out=create.tfplan
 terraform apply create.tfplan

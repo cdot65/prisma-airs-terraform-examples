@@ -1,0 +1,95 @@
+# Actual Terraform CLI output from signed Registry provider 0.11.0; UUIDs and local paths sanitized.
+# Source: examples/ai-gateway/provider-catalog/discovery/main.tf
+
+$ terraform init -input=false -no-color
+Initializing the backend...
+
+Initializing provider plugins...
+- Finding cdot65/prisma-airs versions matching "0.11.0"...
+- Installing cdot65/prisma-airs v0.11.0...
+- Installed cdot65/prisma-airs v0.11.0 (self-signed, key ID 4C3FB8AB8B0E1B54)
+Partner and community providers are signed by their developers.
+If you'd like to know more about provider signing, you can read about it here:
+https://developer.hashicorp.com/terraform/cli/plugins/signing
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+$ terraform validate -no-color
+Success! The configuration is valid.
+
+$ terraform apply -auto-approve -no-color
+data.prisma-airs_gateway_ai_providers.catalog: Reading...
+data.prisma-airs_gateway_ai_providers.catalog: Read complete after 2s
+
+Changes to Outputs:
+  + catalog_counts      = {
+      + active   = 79
+      + returned = 81
+    }
+  + provider_family_ids = {
+      + anthropic = "<anthropic-provider-family-uuid>"
+      + open-ai   = "<openai-provider-family-uuid>"
+    }
+
+You can apply this plan to save these new output values to the Terraform
+state, without changing any real infrastructure.
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+catalog_counts = {
+  "active" = 79
+  "returned" = 81
+}
+provider_family_ids = {
+  "anthropic" = "<anthropic-provider-family-uuid>"
+  "open-ai" = "<openai-provider-family-uuid>"
+}
+
+$ terraform output -no-color
+catalog_counts = {
+  "active" = 79
+  "returned" = 81
+}
+provider_family_ids = {
+  "anthropic" = "<anthropic-provider-family-uuid>"
+  "open-ai" = "<openai-provider-family-uuid>"
+}
+
+$ terraform plan -out=unchanged.tfplan -detailed-exitcode -no-color
+data.prisma-airs_gateway_ai_providers.catalog: Reading...
+data.prisma-airs_gateway_ai_providers.catalog: Read complete after 1s
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+
+$ terraform destroy -auto-approve -no-color
+data.prisma-airs_gateway_ai_providers.catalog: Reading...
+data.prisma-airs_gateway_ai_providers.catalog: Read complete after 1s
+
+Changes to Outputs:
+  - catalog_counts      = {
+      - active   = 79
+      - returned = 81
+    } -> null
+  - provider_family_ids = {
+      - anthropic = "<anthropic-provider-family-uuid>"
+      - open-ai   = "<openai-provider-family-uuid>"
+    } -> null
+
+You can apply this plan to save these new output values to the Terraform
+state, without changing any real infrastructure.
+
+Destroy complete! Resources: 0 destroyed.
+
+$ terraform state list
+
+

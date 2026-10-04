@@ -1,11 +1,11 @@
-# Setup: Pin the release that includes provider-family discovery.
+# Setup: Use the catalog-capable development provider until its release.
 terraform {
   required_version = ">= 1.11.0, < 2.0.0"
 
   required_providers {
     prisma-airs = {
       source  = "cdot65/prisma-airs"
-      version = "= 0.11.0"
+      version = "> 0.10.0, < 1.0.0"
     }
   }
 }

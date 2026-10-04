@@ -6,7 +6,7 @@ Four saved routing policies teach fallback/retry, weighted balancing, conditiona
 
 ## Discover upstream provider IDs
 
-For OpenAI GPT and Anthropic Claude Opus connections selected by readable catalog slug, start with the [provider catalog example](provider-catalog/README.md). It discovers provider-family UUIDs inside Terraform; no manual UUID input is needed. That data source is pending the next provider release and currently requires the documented development build. The expanded project below remains the published 0.10.0 compatibility configuration.
+For OpenAI GPT and Anthropic Claude Opus connections selected by readable catalog slug, start with the [provider catalog example](provider-catalog/README.md). It discovers provider-family UUIDs inside Terraform; no manual UUID input is needed. That example pins provider 0.11.0 and installs directly from the Terraform Registry. The expanded project below remains the published 0.10.0 compatibility configuration.
 
 ## Before you start
 

@@ -1,6 +1,8 @@
 # Recorded live validation
 
-## Current release: provider 0.10.0
+The [Gateway catalog lesson](../examples/ai-gateway/provider-catalog/validation.md) uses Registry provider **0.11.0**. Its discovery evidence and model-request results are recorded separately from the four product roots below.
+
+## Current release: provider 0.10.0 (four product roots)
 
 The [2026-10-04 live runs](live-runs/provider-0.10.0.md) and [exact source receipts](live-runs/provider-0.10.0-receipts.json) cover the current examples. The signed Registry provider is pinned to 0.10.0. All 26 resources and 27 data sources appear in the [schema-checked coverage table](resource-coverage.md); shared-rule adoption and tenant onboarding remain protected, optional lessons.
 

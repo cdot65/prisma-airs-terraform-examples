@@ -4,7 +4,7 @@
   "provider_source_commit": "4462597b78916fd49b4973fb9ad900705bec3300",
   "provider_binary_sha256": "e64ba55bc33149b960687eaf4f3ebe953f693cd7fe53dfd087c47a20e639df73",
   "source_sha256": {
-    "examples/ai-gateway/provider-catalog/discovery/main.tf": "e67c683e6431ba98c66387f32754165418f5f048a3c38c0ad14429243a08d9b2"
+    "docs/live-runs/gateway-provider-catalog-development-source.tf": "e67c683e6431ba98c66387f32754165418f5f048a3c38c0ad14429243a08d9b2"
   },
   "catalog_counts": {
     "active": 79,
@@ -22,5 +22,6 @@
   "live_model_requests": 0,
   "transcript_sha256": "aa3c70aaa89d8836d25f0bf3c018ade989dc5e63408a60deefd713c091526b85",
   "sanitized": true,
-  "sanitization": "Provider-family UUIDs and local paths replaced with labeled placeholders. Terraform text, counts and elapsed times retained."
+  "sanitization": "Provider-family UUIDs and local paths replaced with labeled placeholders. Terraform text, counts and elapsed times retained.",
+  "executed_source_path": "examples/ai-gateway/provider-catalog/discovery/main.tf"
 }

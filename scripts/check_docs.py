@@ -57,7 +57,8 @@ def main():
         missing = set(run["managed_resource_types"]) - checked
         if missing:
             errors.append(f"{run['variant']}: missing independent cleanup types {sorted(missing)}")
-    for stem, extension in [("gateway-provider-catalog", ".txt"), ("gateway-existing-models", ".md")]:
+    for stem, extension in [("gateway-provider-catalog", ".txt"), ("gateway-provider-catalog-release", ".txt"),
+                            ("gateway-existing-models", ".md")]:
         live_receipt = ROOT / f"docs/live-runs/{stem}-receipt.json"
         if not live_receipt.is_file():
             continue
