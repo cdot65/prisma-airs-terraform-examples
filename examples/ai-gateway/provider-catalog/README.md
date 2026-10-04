@@ -8,7 +8,7 @@ Build two model connections in an existing Gateway workspace. Terraform reads th
 
 You need Terraform 1.11+, the [management environment variables](../../../README.md#get-started), an existing Gateway workspace with an inference deployment, and OpenAI and Anthropic API credentials. ChatGPT subscription access does not supply an OpenAI API credential. The sample uses the API model IDs `gpt-4.1` and `claude-opus-4-6`; choose alternatives if your account or Gateway has different models enabled. See [OpenAI's model reference](https://developers.openai.com/api/docs/models/gpt-4.1) and [Claude model IDs](https://platform.claude.com/docs/en/about-claude/models/model-ids-and-versions).
 
-Build the catalog-capable provider branch:
+For this development setup, install Go 1.25.6+ and `make`, then build the catalog-capable provider branch:
 
 ```bash
 git clone --branch feat/gateway-provider-catalog https://github.com/cdot65/terraform-provider-prisma-airs.git

@@ -15,7 +15,7 @@ distinct_uuid_matches: true
 resource_writes: 0
 ```
 
-The live check read the catalog and recorded data-source state only. No model connection, workspace binding, application key, or routing object was created. Real OpenAI GPT and Claude Opus inference was **not** run: the available upstream credential is for a separate OpenAI-compatible service, not either first-party API. Model IDs in this lesson are documented examples, not live-verified tenant model availability. Run the guide's requests with your own enabled models and API credentials.
+The live check read the catalog and recorded data-source state only. Its test state was subsequently destroyed and verified empty. No model connection, workspace binding, application key, or routing object was created. Real OpenAI GPT and Claude Opus inference was **not** run: the available upstream credential is for a separate OpenAI-compatible service, not either first-party API. Model IDs in this lesson are documented examples, not live-verified tenant model availability. Run the guide's requests with your own enabled models and API credentials.
 
 The four released product roots retain their provider 0.10.0 validation and evidence. Check this new development lesson separately:
 
