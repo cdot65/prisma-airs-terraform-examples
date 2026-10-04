@@ -1,5 +1,7 @@
 # Recorded live validation
 
+The [adapter walkthrough](../examples/ai-red-teaming/adapters/README.md) pins signed Registry provider **0.12.0**. Its [recorded release run](../examples/ai-red-teaming/adapters/released-live-run.md) covers draft creation, explicit text-only broker activation, adapter target registration, a no-op plan, and independently verified cleanup. Historical development-build output remains separate.
+
 The [Gateway catalog lesson](../examples/ai-gateway/provider-catalog/validation.md) uses Registry provider **0.11.0**. Its discovery evidence and model-request results are recorded separately from the four product roots below.
 
 ## Current release: provider 0.10.0 (four product roots)

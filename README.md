@@ -9,6 +9,8 @@ Configure Prisma AIRS with ready-to-run Terraform projects using the [Prisma AIR
 | [AI Gateway](examples/ai-gateway/README.md) | Existing or owned workspace with dedicated IAM scope, model connections, four routing lessons, AIRS guardrails, application keys, request/token policies, and optional platform capabilities |
 | [AI Supply Chain Security](examples/ai-supply-chain-security/README.md) | A Model Security group, Skill Scanning catalogs, synthetic trust, optional shared policy/onboarding, and existing scan discovery |
 
+The [adapter walkthrough](examples/ai-red-teaming/adapters/README.md) uses Registry provider **0.12.0** for script and variable ownership, existing-broker activation, automatic UUID discovery, and adapter-backed targets. [0.12.0 coverage](docs/upcoming-provider-0.12.0.md) also explains the target import, Runtime policy, and Gateway null fixes.
+
 The [OpenAI GPT and Claude Opus catalog lesson](examples/ai-gateway/provider-catalog/README.md) demonstrates automatic provider-family UUID discovery. It pins Registry provider **0.11.0**; the four product roots below retain their tested 0.10.0 compatibility pins.
 
 Each directory is an independent Terraform root with its own state. Start with one product; you do not need to apply all four. The four product roots pin published provider **0.10.0** and require Terraform **1.11 or later**, before 2.0. Terraform 1.11 enables the Skill Scanning write-only authorization code; its input variable is ephemeral. [Release coverage](docs/resource-coverage.md) maps all 26 resources and 27 data sources to runnable configuration, including optional and import-only lessons.

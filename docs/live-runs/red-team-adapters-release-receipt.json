@@ -1,0 +1,30 @@
+{
+  "provider": "0.12.0",
+  "signed_registry_install": true,
+  "source_sha256": {
+    "examples/ai-red-teaming/adapters/main.tf": "4da58b09693e1c6376a3b483dc673d425cbe388d79b6a20ccf1aee647a07033e",
+    "examples/ai-red-teaming/adapters/variables.tf": "18b54e210e7d6647a18ec5299f1f4c8d047a50bae565f642a8564edbdaa4d9ec",
+    "examples/ai-red-teaming/adapters/outputs.tf": "ce3b43a7984c110cf88e8d5255e6447ccfaafd51fbf8c24d64fb77b894ddf741",
+    "examples/ai-red-teaming/adapters/adapter.py": "6c19abcc8080c35f37418060cd20fc277bf6d24032ed914b2d50e5d5371b5e16"
+  },
+  "draft_added": 1,
+  "activation_added": 1,
+  "activation_changed": 1,
+  "ordinary_plan_exit": 0,
+  "destroyed": 2,
+  "cleanup_http404": [
+    "prisma-airs_red_team_adapter",
+    "prisma-airs_red_team_target"
+  ],
+  "date": "2026-10-04",
+  "terraform": "1.16.4",
+  "provider_release_commit": "31f51cde8088262ff740318ece869d47d5f0b316",
+  "reviewed_provider_head": "5c37b01e721973bb7eca2daff3369f8773661371",
+  "review": {
+    "reviewer": "independent Codex agents",
+    "standards": 9.3,
+    "spec": 9.4
+  },
+  "transcript_path": "examples/ai-red-teaming/adapters/released-live-run.md",
+  "transcript_sha256": "8dcf174e5d14b69b4854f81a89d8d5051910ee68f3fcc81e2480be69fe6653b1"
+}

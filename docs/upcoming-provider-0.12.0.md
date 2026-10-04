@@ -1,6 +1,6 @@
-# Upcoming provider 0.12.0
+# Provider 0.12.0 — adapters and adoption
 
-This branch adds examples for the adapter/adoption candidate. Provider 0.12.0 is not released yet; the independent Claude Code review gate remains pending. Existing published projects and their historical receipts remain unchanged.
+Provider **0.12.0** adds adapter ownership and discovery. Independent Codex review scored Standards **9.3/10** and Spec **9.4/10** after fixing the target write-safety findings. The signed Registry install and released example lifecycle are recorded separately; existing product-root pins and historical receipts remain reproducible. The current provider exposes **27 resources and 30 data sources**.
 
 | New Terraform type | Getting-started project |
 | --- | --- |
@@ -8,15 +8,15 @@ This branch adds examples for the adapter/adoption candidate. Provider 0.12.0 is
 | Data source `prisma-airs_red_team_adapters` | [Exact name-to-UUID discovery](../examples/ai-red-teaming/adapters/main.tf) |
 | Data source `prisma-airs_red_team_adapter` | [Read-only adapter configuration](../examples/ai-red-teaming/adapters/main.tf) |
 
-The same project demonstrates `prisma-airs_red_team_target.adapter`, explicit execution opt-in, null response mode, target dependency ordering, and cleanup. Its [getting-started guide](../examples/ai-red-teaming/adapters/README.md) includes adoption instructions and links [real sanitized output](../examples/ai-red-teaming/adapters/live-run.md). A separate disposable fixture proved redacted-secret retention; this connectivity example uses a deterministic text reply rather than claiming a model-security assessment.
+The same project demonstrates `prisma-airs_red_team_target.adapter`, explicit execution opt-in, null response mode, target dependency ordering, and cleanup. Its [getting-started guide](../examples/ai-red-teaming/adapters/README.md) includes adoption instructions and links [real sanitized released-provider output](../examples/ai-red-teaming/adapters/released-live-run.md). A separate disposable fixture proved redacted-secret retention; this connectivity example uses a deterministic text reply rather than claiming a model-security assessment.
 
-Provider adoption fixes also recover usable endpoint-target payloads and OAuth templates, permit safe no-op configuration without unavailable secrets, and block incomplete writes. Runtime preserves observed empty toxic-content/category representations, and Gateway import supports bare native nulls with real drift detection. See the candidate's [verification report](https://cdot65.github.io/terraform-provider-prisma-airs/development/adoption-fidelity-verification/) after its documentation is published.
+Provider adoption fixes also recover usable endpoint-target payloads and OAuth templates, permit safe no-op configuration without unavailable secrets, and block incomplete writes. Runtime preserves observed empty toxic-content/category representations, and Gateway import supports bare native nulls with real drift detection. See the provider's [verification report](https://cdot65.github.io/terraform-provider-prisma-airs/development/adoption-fidelity-verification/) in the production documentation.
 
-Before release, check this project against a local candidate build:
+Check the pinned Registry project without tenant access:
 
 ```bash
-python3 scripts/validate-adapters.py --provider-dir /path/to/provider-checkout
+python3 scripts/validate-adapters.py
 python3 scripts/check_docs.py
 ```
 
-After publication, run `python3 scripts/validate-adapters.py` to install and validate the pinned Registry version. The parent project validation remains separate so its released provider locks and evidence stay reproducible.
+For provider development, use `python3 scripts/validate-adapters.py --provider-dir /path/to/provider-checkout` to validate against a local build. The parent project validation remains separate so its released provider locks and evidence stay reproducible.
