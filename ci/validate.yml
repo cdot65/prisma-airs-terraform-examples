@@ -33,5 +33,8 @@ jobs:
       - name: Validate configuration
         working-directory: examples/${{ matrix.example }}
         run: terraform validate -no-color
+      - name: Check mocked Terraform feature tests
+        working-directory: examples/${{ matrix.example }}
+        run: terraform test -no-color
       - name: Check credential helper syntax
         run: python3 -m py_compile scripts/with-tenant.py

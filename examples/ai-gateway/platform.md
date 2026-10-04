@@ -28,7 +28,7 @@ Set `developer_user_id` to an existing authorized workspace user's UUID:
 developer_user_id = "existing-user-uuid"
 ```
 
-Terraform creates a user key with completion scope and the fallback config. It does not create the user or grant workspace membership. `developer_api_key` is sensitive one-time material retained in state. Destroy removes only this key.
+Terraform creates a user key with completion scope and the fallback config. It does not create the user or grant workspace membership. Arrange membership and access grants outside this provider before enabling a user key for a new workspace. `developer_api_key` is sensitive one-time material retained in state. Destroy removes only this key.
 
 ## MCP tools
 
@@ -76,8 +76,8 @@ This creates an **organization-scoped** policy and explicitly attaches it to thi
 
 After apply, run `python3 demo.py --org-deny` to verify the owned policy's denial through an attached config. On the tested hybrid deployment, an unreferenced organization policy did not automatically deny this marker; explicit attachment succeeded. Automatic baseline enforcement across other workspaces requires separate deployment verification.
 
-Provider 0.9.0 does not expose workspace exclusions or a writable request/response target. This option does not adopt or edit existing shared guardrails. Disable it and apply, or destroy the project, to remove the owned policy.
+Provider 0.10.0 does not expose workspace exclusions or a writable request/response target. This option does not adopt or edit existing shared guardrails. Disable it and apply, or destroy the project, to remove the owned policy.
 
 ## Coverage and limits
 
-Together with the default application, these options cover all **15 released Gateway resource types**. The [run evidence](../../docs/live-runs/ai-gateway-expanded.md) distinguishes lifecycle checks, runtime checks, and prerequisites that were unavailable. A disabled optional resource is schema-checked by `terraform validate`; that does not establish that your external secret store, deployment, identity, or MCP endpoint works.
+Together with the default application, these options cover all **16 released Gateway resource types**, including [workspace ownership](README.md#own-a-workspace). The [current release evidence](../../docs/live-runs/provider-0.10.0.md) and [historical expanded run](../../docs/live-runs/ai-gateway-expanded.md) distinguishes lifecycle checks, runtime checks, and prerequisites that were unavailable. A disabled optional resource is schema-checked by `terraform validate`; that does not establish that your external secret store, deployment, identity, or MCP endpoint works.

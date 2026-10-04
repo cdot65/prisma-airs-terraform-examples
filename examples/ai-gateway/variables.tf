@@ -1,4 +1,4 @@
-# Identity: Keep names stable and reference an existing workspace.
+# Identity: Keep names stable and select existing or owned workspace access.
 variable "name_prefix" {
   description = "Unique owned prefix and application metadata value; keep stable until destroy."
   type        = string
@@ -10,8 +10,14 @@ variable "name_prefix" {
 }
 
 variable "workspace_id" {
-  description = "Existing Gateway workspace UUID; workspace and IAM provisioning are external."
+  description = "Existing Gateway workspace UUID; omit when create_workspace is true."
   type        = string
+  default     = null
+
+  validation {
+    condition     = var.create_workspace ? var.workspace_id == null : try(length(trimspace(var.workspace_id)) > 0, false)
+    error_message = "Supply workspace_id for an existing workspace, or omit it and set create_workspace = true."
+  }
 }
 
 # Connections: Match named integrations to environment-supplied credentials.

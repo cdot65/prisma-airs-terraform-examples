@@ -1,11 +1,11 @@
 # Setup: Pin the provider and Terraform versions used by this example.
 terraform {
-  required_version = ">= 1.8.0, < 2.0.0"
+  required_version = ">= 1.11.0, < 2.0.0"
 
   required_providers {
     prisma-airs = {
       source  = "cdot65/prisma-airs"
-      version = "= 0.9.0"
+      version = "= 0.10.0"
     }
   }
 }

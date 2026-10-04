@@ -1,10 +1,18 @@
 # Recorded live validation
 
+## Current release: provider 0.10.0
+
+The [2026-10-04 live runs](live-runs/provider-0.10.0.md) and [exact source receipts](live-runs/provider-0.10.0-receipts.json) cover the current examples. The signed Registry provider is pinned to 0.10.0. All 26 resources and 27 data sources appear in the [schema-checked coverage table](resource-coverage.md); shared-rule adoption and tenant onboarding remain protected, optional lessons.
+
+Local validation passes four locked Terraform roots, **17 mock Terraform feature tests**, and **13 Python helper tests**, without tenant access. Fresh live runs cover all four products and both Gateway workspace paths, followed by independent cleanup queries. See the current release report for precise operation limits.
+
+## Historical provider 0.9.0 evidence
+
 All four products were exercised against the vulture tenant on 2026-10-03 using Terraform 1.16.4 and the signed Registry provider `cdot65/prisma-airs` 0.9.0. Management credentials were supplied through `PANW_MGMT_*` environment variables. Upstream credentials for the expanded Gateway application came from an owner-provided private file and were passed as sensitive Terraform environment variables.
 
 The product READMEs are getting-started guides. This document describes evidence and its limits; it is not a substitute for their prerequisites.
 
-## Current configuration evidence
+## Historical configuration evidence
 
 | Project | Created | Update and convergence | Cleanup |
 | --- | --- | --- | --- |
@@ -31,7 +39,7 @@ Public excerpts omit progress details and replace identifiers, endpoints, and mo
 
 ## Local validation
 
-`python3 scripts/validate.py` checks formatting, locked provider installation, schema validation for all four projects, and request-helper tests without tenant access or remote writes. The optional CI template performs these checks; it does not reproduce live lifecycle evidence.
+`python3 scripts/validate.py` checks formatting, locked provider installation, schema validation, mock feature tests for all four projects, release coverage, and Python helper tests without tenant access or remote writes. The optional CI matrix performs the per-project Terraform checks; it does not run the coverage gate or Python test suite and does not reproduce live lifecycle evidence.
 
 ## Post-review MCP regression check
 
@@ -39,8 +47,8 @@ Independent review of head `a15fef5` identified per-line JSON parsing in SSE res
 
 This correction changes Python response parsing only. Terraform configuration and live source-hash receipts remain unchanged; regression validation requires no tenant credentials or live API writes.
 
-## Skill Scanning release dependency
+## Historical Skill Scanning preview
 
 The Supply Chain extension was separately validated against a local snapshot of ongoing provider Skill Scanning work using published Go SDK 0.7.0. It created a model group and synthetic fingerprint override, replaced the override after a reason change, refreshed with an empty plan, and destroyed both fixtures. Independent checks confirmed the group tombstone and absence of the synthetic fingerprint override.
 
-That development-override run does not validate a released provider binary. The extension remains deferred until an upstream provider release is published, its actual version is pinned, and the final configuration passes its lifecycle with the Registry package. Existing tenant instances and shared rule policy were not modified. Instance discovery returned HTTP 403 and is not required by the example.
+That development-override run did not validate a released provider binary. Provider 0.10.0 has since shipped, and the current extension is pinned and live-tested against that Registry package; the fresh receipt above supersedes the earlier release dependency. Existing tenant instances and shared rule policy were not modified. Instance discovery returned HTTP 403 and is not required by the example.

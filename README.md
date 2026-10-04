@@ -4,12 +4,12 @@ Configure Prisma AIRS with ready-to-run Terraform projects using the [Prisma AIR
 
 | Start here | What you build |
 | --- | --- |
-| [AI Runtime Security](examples/ai-runtime-security/README.md) | A confidential-information topic and an application security profile |
+| [AI Runtime Security](examples/ai-runtime-security/README.md) | A confidential-information topic, application policy, optional scanning key, and import-only application |
 | [AI Red Teaming](examples/ai-red-teaming/README.md) | An authenticated application target and custom prompt-set container |
-| [AI Gateway](examples/ai-gateway/README.md) | Owned model connections, four routing lessons, AIRS guardrails, application keys, request/token policies, and optional platform capabilities |
-| [AI Supply Chain Security](examples/ai-supply-chain-security/README.md) | A Model Security group and security-rule discovery |
+| [AI Gateway](examples/ai-gateway/README.md) | Existing or owned workspace with dedicated IAM scope, model connections, four routing lessons, AIRS guardrails, application keys, request/token policies, and optional platform capabilities |
+| [AI Supply Chain Security](examples/ai-supply-chain-security/README.md) | A Model Security group, Skill Scanning catalogs, synthetic trust, optional shared policy/onboarding, and existing scan discovery |
 
-Each directory is an independent Terraform root with its own state. Start with one product; you do not need to apply all four. The examples pin provider **0.9.0**. Gateway requires Terraform **1.9 or later**; the other roots require **1.8 or later**. All require Terraform before 2.0.
+Each directory is an independent Terraform root with its own state. Start with one product; you do not need to apply all four. The examples pin published provider **0.10.0** and require Terraform **1.11 or later**, before 2.0. Terraform 1.11 enables the Skill Scanning write-only authorization code; its input variable is ephemeral. [Release coverage](docs/resource-coverage.md) maps all 26 resources and 27 data sources to runnable configuration, including optional and import-only lessons.
 
 ## Get started
 
@@ -67,12 +67,12 @@ The helper reads `mgmtClientId`, `mgmtClientSecret`, and `mgmtTsgId` from the li
 
 ## Explore and contribute
 
-Examples create their own named configuration and reference externally provisioned workspaces, application endpoints, and tenant integrations where documented. Gateway creates its upstream connections and bindings; its optional organization policy is organization-scoped and explicitly attached to the owned configurations. Read its [platform guide](examples/ai-gateway/platform.md) before enabling optional features. [Resource ownership](docs/adr/0001-example-resource-ownership.md) explains cleanup boundaries.
+Examples create their own named configuration and reference external application endpoints and integrations where documented. Gateway defaults to an existing workspace and can opt in to owning a new workspace and dedicated IAM scope. Gateway creates its upstream connections and bindings; its optional organization policy is organization-scoped and explicitly attached to the owned configurations. Read its [platform guide](examples/ai-gateway/platform.md) before enabling optional features. [Resource ownership](docs/adr/0001-example-resource-ownership.md) explains cleanup boundaries.
 
 Terraform files use short `# Concept: purpose` comments at concept boundaries and multiline objects for nested configuration. Keep comments focused on dependencies and product behavior; variable descriptions explain individual inputs.
 
-Run `python3 scripts/validate.py` to check formatting, Registry installation, provider schema validation, and request-helper tests without tenant credentials. An optional [GitHub Actions template](ci/README.md) runs those checks in CI. Recorded live results and their limits are in [validation documentation](docs/validation.md); short sanitized output excerpts appear in the guides.
+Run `python3 scripts/validate.py` to check formatting, Registry installation, provider schema validation, 17 mocked Terraform feature tests, complete release coverage, documentation links/evidence hashes, and request-helper tests without tenant credentials. An optional [GitHub Actions template](ci/README.md) runs the per-project Terraform checks in CI; run the full script for coverage and Python tests. Recorded live results and their limits are in [validation documentation](docs/validation.md); short sanitized output excerpts appear in the guides.
 
-Supply Chain Skill Scanning coverage will be added after the supporting provider release is published and validated. The current released example uses Model Security.
+[Upgrading existing examples](docs/upgrading.md) explains the new release pins and optional controls. Historical provider 0.9.0 run evidence remains explicitly labeled; fresh provider 0.10.0 runs are recorded separately.
 
 See the [glossary](GLOSSARY.md) for product terminology. This community repository uses the MIT license.

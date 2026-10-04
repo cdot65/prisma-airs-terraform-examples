@@ -1,11 +1,11 @@
 # Setup: Pin the provider and Terraform versions used by this example.
 terraform {
-  required_version = ">= 1.9.0, < 2.0.0"
+  required_version = ">= 1.11.0, < 2.0.0"
 
   required_providers {
     prisma-airs = {
       source  = "cdot65/prisma-airs"
-      version = "= 0.9.0"
+      version = "= 0.10.0"
     }
   }
 }
@@ -34,14 +34,14 @@ resource "prisma-airs_gateway_integration" "models" {
 resource "prisma-airs_gateway_integration_workspace_binding" "models" {
   for_each       = var.upstreams
   integration_id = prisma-airs_gateway_integration.models[each.key].id
-  workspace_id   = var.workspace_id
+  workspace_id   = local.workspace_id
 }
 
 resource "prisma-airs_gateway_provider" "models" {
   for_each       = var.upstreams
   name           = "${var.name_prefix}-${each.key}-provider"
   integration_id = prisma-airs_gateway_integration.models[each.key].id
-  workspace_id   = var.workspace_id
+  workspace_id   = local.workspace_id
 
   depends_on = [prisma-airs_gateway_integration_workspace_binding.models]
 }
@@ -86,7 +86,7 @@ locals {
 
 resource "prisma-airs_gateway_guardrail" "marker" {
   name         = "${var.name_prefix}-deny-marker"
-  workspace_id = var.workspace_id
+  workspace_id = local.workspace_id
 
   checks = [
     {
@@ -107,7 +107,7 @@ resource "prisma-airs_gateway_guardrail" "marker" {
 
 resource "prisma-airs_gateway_guardrail" "airs" {
   name         = "${var.name_prefix}-airs-inspection"
-  workspace_id = var.workspace_id
+  workspace_id = local.workspace_id
 
   checks = [
     {
@@ -129,7 +129,7 @@ resource "prisma-airs_gateway_guardrail" "airs" {
 resource "prisma-airs_gateway_config" "routing" {
   for_each     = local.routing_configs
   name         = "${var.name_prefix}-${each.key}"
-  workspace_id = var.workspace_id
+  workspace_id = local.workspace_id
 
   config = merge(each.value, {
     before_request_hooks = concat(
@@ -146,7 +146,7 @@ resource "prisma-airs_gateway_config" "routing" {
 resource "prisma-airs_gateway_service_api_key" "application" {
   for_each     = local.routing_configs
   name         = "${var.name_prefix}-${each.key}-key"
-  workspace_id = var.workspace_id
+  workspace_id = local.workspace_id
   scopes       = var.enable_mcp ? ["completions.write", "mcp.invoke"] : ["completions.write"]
 
   defaults = {
@@ -162,7 +162,7 @@ resource "prisma-airs_gateway_service_api_key" "application" {
 # Limits: Aggregate requests and tokens across keys carrying this application metadata.
 resource "prisma-airs_gateway_rate_limit" "application" {
   name         = "${var.name_prefix}-request-limit"
-  workspace_id = var.workspace_id
+  workspace_id = local.workspace_id
   type         = "requests"
   unit         = "rpm"
   target       = "llm"
@@ -184,7 +184,7 @@ resource "prisma-airs_gateway_rate_limit" "application" {
 
 resource "prisma-airs_gateway_usage_limit" "application" {
   name            = "${var.name_prefix}-token-budget"
-  workspace_id    = var.workspace_id
+  workspace_id    = local.workspace_id
   type            = "tokens"
   credit_limit    = var.token_budget
   alert_threshold = max(1, floor(var.token_budget * 0.2))

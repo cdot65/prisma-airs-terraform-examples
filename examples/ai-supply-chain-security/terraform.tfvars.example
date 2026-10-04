@@ -1,3 +1,11 @@
 # Identity: Keep the prefix stable; edit the annotation for the update lesson.
 name_prefix        = "example-supply-chain-demo"
 description_suffix = "initial"
+
+# Skill Scanning: Enable after configuring PANW_SKILL_SCANNING_*_ENDPOINT.
+enable_skill_scanning = false
+enable_skill_history  = false
+
+# Shared settings: Rule and tenant onboarding management require deliberate opt-in.
+manage_skill_rule     = false
+manage_skill_instance = false

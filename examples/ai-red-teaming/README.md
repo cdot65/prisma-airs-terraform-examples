@@ -4,7 +4,7 @@ Register an authenticated application as a Red Team target and create a custom p
 
 ## Before you start
 
-Install Terraform 1.8 or later, before 2.0, and load the three [management environment variables](../../README.md#get-started). Your service account needs Red Team management access. Provider 0.9.0 is pinned by this project.
+Install Terraform 1.11 or later, before 2.0, and load the three [management environment variables](../../README.md#get-started). Your service account needs Red Team management access. Provider 0.10.0 is pinned by this project.
 
 You also need a reachable application endpoint, its real request/response format, and any authentication headers. The target application is provisioned separately.
 
@@ -35,7 +35,7 @@ terraform apply create.tfplan
 terraform output
 ```
 
-A sanitized excerpt from the recorded live run:
+A sanitized excerpt from the historical provider 0.9.0 live run (new release evidence is linked below):
 
 ```text
 Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
@@ -49,7 +49,7 @@ target_id = "<target-id>"
 
 Find the new target using `target_id` in Prisma AIRS and validate its connectivity and response parsing. Add attack prompts to the named custom prompt set through the console or CLI, then select the target and prompts for your assessment.
 
-Provider 0.9.0 manages the prompt-set container; it does not populate its prompts. Applying Terraform does not validate endpoint connectivity or launch an assessment. The [Red Team workflow](https://cdot65.github.io/terraform-provider-prisma-airs/guides/red-team-testing/) explains these separate steps.
+Provider 0.10.0 manages the prompt-set container; it does not populate its prompts. Applying Terraform does not validate endpoint connectivity or launch an assessment. The [Red Team workflow](https://cdot65.github.io/terraform-provider-prisma-airs/guides/red-team-testing/) explains these separate steps.
 
 ## Make a change
 
@@ -74,3 +74,5 @@ Terraform deletes the owned target and archives the prompt set. An archived prom
 If target validation fails, check the endpoint, header JSON, placeholder placement, and response field. If management authentication fails, check the environment and Red Team roles.
 
 [Detailed live output and cleanup evidence](../../docs/live-runs/ai-red-teaming.md) · [Validation boundaries](../../docs/validation.md)
+
+[Provider 0.10.0 live evidence](../../docs/live-runs/provider-0.10.0.md) · [Complete release coverage](../../docs/resource-coverage.md)

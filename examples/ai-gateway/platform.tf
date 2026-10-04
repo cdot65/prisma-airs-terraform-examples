@@ -7,14 +7,14 @@ resource "prisma-airs_gateway_secret_reference" "upstream" {
   secret_key           = var.secret_manager.secret_key
   auth_config          = var.secret_manager_auth
   allow_all_workspaces = false
-  allowed_workspaces   = [var.workspace_id]
+  allowed_workspaces   = [local.workspace_id]
 }
 
 # Developer access: Issue a fallback key for an existing authorized workspace user.
 resource "prisma-airs_gateway_user_api_key" "developer" {
   count        = var.developer_user_id == null ? 0 : 1
   name         = "${var.name_prefix}-developer-key"
-  workspace_id = var.workspace_id
+  workspace_id = local.workspace_id
   user_id      = var.developer_user_id
   scopes       = ["completions.write"]
 
@@ -41,13 +41,13 @@ resource "prisma-airs_gateway_mcp_integration" "tools" {
 resource "prisma-airs_gateway_mcp_integration_workspace_binding" "tools" {
   count          = var.enable_mcp ? 1 : 0
   integration_id = prisma-airs_gateway_mcp_integration.tools[0].id
-  workspace_id   = var.workspace_id
+  workspace_id   = local.workspace_id
 }
 
 resource "prisma-airs_gateway_mcp_server" "tools" {
   count              = var.enable_mcp ? 1 : 0
   name               = "${var.name_prefix}-mcp-server"
-  workspace_id       = var.workspace_id
+  workspace_id       = local.workspace_id
   mcp_integration_id = prisma-airs_gateway_mcp_integration.tools[0].id
 
   depends_on = [prisma-airs_gateway_mcp_integration_workspace_binding.tools]
