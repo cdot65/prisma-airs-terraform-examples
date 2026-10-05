@@ -89,6 +89,7 @@ metadata verification used a separate administrative identity.
 | 4 — trusted private branch PR | Success, 357 no-op actions |
 | 9 — final main plan | Success, 357 no-op actions |
 | 10 — manual exact saved-plan apply | Success, no-op, 357 identities preserved |
+| 11 — post-apply main plan | Success, exit 0, 357 no-op actions |
 
 The [machine-readable receipt](live-receipt.json) records the executed private
 commit, public helper hashes, and sanitized outcomes. The generic public runner
@@ -99,3 +100,8 @@ Six prior API/access cases remain outside the safely owned inventory: four
 Gateway workspace IAM-scope reads and one listed provider read return 404, and
 one Skill Scanning instance read returns 403. This CI/CD cutover does not repair
 those external blockers or invent unavailable credentials.
+
+Independent Codex review of the final implementation rated Standards **9.2/10**
+and Spec **9.3/10**, with no remaining actionable findings. This proves the
+no-op adoption/cutover workflow; configuration-changing applies remain deliberate
+future changes, subject to the same reviewed-plan controls.

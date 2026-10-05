@@ -53,6 +53,14 @@
       "applied_plan_id": "4448-1",
       "applied": true,
       "noop": true
+    },
+    {
+      "run_id": 4450,
+      "number": 11,
+      "event": "workflow_dispatch",
+      "status": "success",
+      "no_op_resources": 357,
+      "terraform_plan_exit": 0
     }
   ],
   "control_tests": 18,
@@ -64,5 +72,11 @@
     "examples/cicd/forgejo-conjur/ci/requirements.txt": "e89a4325c8be7b7a30c165d0e2904349510f610b9449a88ae0160ed5ef32831e",
     "examples/cicd/forgejo-conjur/ci/tests/test_controls.py": "3842eb12686de64b532ebc8260c2fcc2dc1c6049c202135205244ad5c02d898a"
   },
-  "transcript_sha256": "7fbfbe33347f0390105a0d2f298795997ec690b030e245dc7b91a58d63b34148"
+  "transcript_sha256": "aecb207c5ca8c7a7ab9bf5e0fb157f1fe77939ce2d8dc18c7d19604c49660297",
+  "review": {
+    "reviewer": "Codex agents",
+    "standards_score": 9.2,
+    "spec_score": 9.3,
+    "actionable_findings": 0
+  }
 }
