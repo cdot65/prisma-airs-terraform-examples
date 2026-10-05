@@ -8,6 +8,7 @@ Configure Prisma AIRS with ready-to-run Terraform projects using the [Prisma AIR
 | [AI Red Teaming](examples/ai-red-teaming/README.md) | An authenticated application target and custom prompt-set container |
 | [AI Gateway](examples/ai-gateway/README.md) | Existing or owned workspace with dedicated IAM scope, model connections, four routing lessons, AIRS guardrails, application keys, request/token policies, and optional platform capabilities |
 | [AI Supply Chain Security](examples/ai-supply-chain-security/README.md) | A Model Security group, Skill Scanning catalogs, synthetic trust, optional shared policy/onboarding, and existing scan discovery |
+| [Forgejo CI/CD with Conjur](examples/cicd/forgejo-conjur/README.md) | Adopt existing configuration, retrieve credentials through workload JWT authentication, and manually apply an exact reviewed plan against locked MinIO state |
 
 The [adapter walkthrough](examples/ai-red-teaming/adapters/README.md) uses Registry provider **0.12.0** for script and variable ownership, existing-broker activation, automatic UUID discovery, and adapter-backed targets. [0.12.0 coverage](docs/upcoming-provider-0.12.0.md) also explains the target import, Runtime policy, and Gateway null fixes.
 
@@ -76,6 +77,8 @@ Examples create their own named configuration and reference external application
 Terraform files use short `# Concept: purpose` comments at concept boundaries and multiline objects for nested configuration. Keep comments focused on dependencies and product behavior; variable descriptions explain individual inputs.
 
 Run `python3 scripts/validate.py` to check formatting, Registry installation, provider schema validation, 17 mocked Terraform feature tests, complete release coverage, documentation links/evidence hashes, and request-helper tests without tenant credentials. An optional [GitHub Actions template](ci/README.md) runs the per-project Terraform checks in CI; run the full script for coverage and Python tests. Recorded live results and their limits are in [validation documentation](docs/validation.md); short sanitized output excerpts appear in the guides.
+
+The CI/CD harness has 18 offline control tests and a locked provider schema check included in `scripts/validate.py`. Its [recorded cutover](examples/cicd/forgejo-conjur/live-run.md) captures real four-product adoption, state migration, and pipeline results.
 
 Check the catalog lesson separately with `python3 scripts/validate-catalog.py`. Its [validation notes](examples/ai-gateway/provider-catalog/validation.md) distinguish live catalog discovery, a real GPT request through an existing connection, Claude authentication failures, and mocked owned-integration checks.
 

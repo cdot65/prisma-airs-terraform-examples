@@ -1,0 +1,68 @@
+{
+  "recorded_at": "2026-10-05",
+  "terraform": "1.16.4",
+  "provider": "0.12.0",
+  "private_source_commit": "e381d9b0f6a84778f4156f605e8df97a9378a1eb",
+  "tenant_identifiers_sanitized": true,
+  "managed_resources": 357,
+  "products": {
+    "ai-runtime-security": 179,
+    "ai-red-teaming": 13,
+    "ai-gateway": 152,
+    "ai-supply-chain-security": 13
+  },
+  "conjur": {
+    "scoped_variables": 26,
+    "workload_authentication_http": 200,
+    "allowed_retrieval_http": 200,
+    "unrelated_permission_http": 404,
+    "wrong_audience_http": 401
+  },
+  "backend": {
+    "versioning": "enabled",
+    "duplicate_conditional_write_http": 412,
+    "unrelated_bucket_http": 403,
+    "terraform_contended_plan_exit": 1,
+    "probe_cleanup_complete": true,
+    "identities_preserved": 357,
+    "original_lineage_preserved": true,
+    "initial_serial": 392,
+    "migrated_serial": 393,
+    "applied_serial": 394
+  },
+  "runs": [
+    {
+      "run_id": 4443,
+      "number": 4,
+      "event": "pull_request",
+      "status": "success",
+      "no_op_resources": 357
+    },
+    {
+      "run_id": 4448,
+      "number": 9,
+      "event": "push",
+      "status": "success",
+      "no_op_resources": 357
+    },
+    {
+      "run_id": 4449,
+      "number": 10,
+      "event": "workflow_dispatch",
+      "status": "success",
+      "applied_plan_id": "4448-1",
+      "applied": true,
+      "noop": true
+    }
+  ],
+  "control_tests": 18,
+  "source_sha256": {
+    "examples/cicd/forgejo-conjur/ci/conjur.py": "3cb93a36c1e328c25bb0bbe6d917bde3722e5aadc795518020443c38284d8e6b",
+    "examples/cicd/forgejo-conjur/ci/plans.py": "7c5a6782a2954c511dae650c90b057c9c1602415055937536b980954f80752ed",
+    "examples/cicd/forgejo-conjur/ci/run.py": "de582d3193181a8287736966350fe71e9ba46e271317fb379cf51ea034276dd5",
+    "examples/cicd/forgejo-conjur/ci/install-terraform.py": "3d50e4a6b3ba53506812eb9efd0d3fc654a29eee4129dfb163a8a64c351fce5e",
+    "examples/cicd/forgejo-conjur/ci/requirements.txt": "e89a4325c8be7b7a30c165d0e2904349510f610b9449a88ae0160ed5ef32831e",
+    "examples/cicd/forgejo-conjur/ci/tests/test_controls.py": "3842eb12686de64b532ebc8260c2fcc2dc1c6049c202135205244ad5c02d898a"
+  },
+  "transcript_sha256": "7fbfbe33347f0390105a0d2f298795997ec690b030e245dc7b91a58d63b34148"
+}
