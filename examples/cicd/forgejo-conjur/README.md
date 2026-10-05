@@ -230,3 +230,9 @@ python3 -m unittest discover -s ci/tests -v
 Read [live-run.md](live-run.md) for recorded Vulture results, with identifiers
 sanitized. The four public product projects retain their own execution guides;
 this harness adds shared ownership, Conjur retrieval, and reviewed CI/CD changes.
+
+For a configuration-changing test, read the [real end-to-end lifecycle record](e2e-live-run.md):
+trusted PR and main plans, manual create/update applies, wrong-checksum and stale-plan
+refusals, narrowly approved disposable cleanup, and restoration of the original
+project. Only the unattached Runtime fixture was mutated; all imported configuration
+kept its protection throughout.
