@@ -38,3 +38,22 @@ jobs:
         run: terraform test -no-color
       - name: Check credential helper syntax
         run: python3 -m py_compile scripts/with-tenant.py
+
+  cicd:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+        with:
+          terraform_version: 1.16.4
+          terraform_wrapper: false
+      - name: Check CI/CD controls without credentials
+        run: python3 -m unittest discover -s examples/cicd/forgejo-conjur/ci/tests -v
+      - name: Validate CI/CD harness without backend access
+        working-directory: examples/cicd/forgejo-conjur
+        run: |
+          terraform fmt -check -recursive
+          TF_CLI_CONFIG_FILE="$PWD/ci/registry.tfrc" terraform init -backend=false -input=false -lockfile=readonly
+          terraform validate -no-color
+      - name: Check documentation and recorded evidence
+        run: python3 scripts/check_docs.py

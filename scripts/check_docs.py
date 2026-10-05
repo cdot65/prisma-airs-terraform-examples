@@ -82,6 +82,16 @@ def main():
         transcript = ROOT / evidence["transcript_path"]
         if not transcript.is_file() or hashlib.sha256(transcript.read_bytes()).hexdigest() != evidence["transcript_sha256"]:
             errors.append("adapter lesson: recorded transcript hash differs")
+    cicd_receipt = ROOT / "examples/cicd/forgejo-conjur/live-receipt.json"
+    if cicd_receipt.is_file():
+        evidence = json.loads(cicd_receipt.read_text())
+        for relative, expected in evidence["source_sha256"].items():
+            source = ROOT / relative
+            if not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != expected:
+                errors.append(f"CI/CD harness: recorded helper hash differs: {relative}")
+        transcript = ROOT / "examples/cicd/forgejo-conjur/live-run.md"
+        if hashlib.sha256(transcript.read_bytes()).hexdigest() != evidence["transcript_sha256"]:
+            errors.append("CI/CD harness: recorded transcript hash differs")
     if errors:
         raise SystemExit("\n".join(errors))
     print(f"Checked {len(paths)} Markdown files/heading targets, {runs} mock test runs, and {len(receipt['runs'])} live source hash sets and cleanup type coverage.")

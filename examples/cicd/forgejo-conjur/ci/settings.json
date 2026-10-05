@@ -1,0 +1,15 @@
+{
+  "repository": "owner/private-tenant-repo",
+  "server_url": "https://forgejo.example.com",
+  "conjur_url": "https://conjur.example.com",
+  "conjur_account": "my-account",
+  "conjur_service_id": "kubernetes",
+  "conjur_prefix": "data/prisma-airs-terraform/my-tenant",
+  "s3_endpoint": "https://minio.example.com",
+  "bucket": "my-prisma-airs-state",
+  "state_key": "state/tenant.tfstate",
+  "region": "us-east-1",
+  "expected_tsg_id": "REPLACE_WITH_YOUR_TSG_ID",
+  "minimum_managed_resources": 1,
+  "plan_max_age_seconds": 86400
+}

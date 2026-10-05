@@ -30,6 +30,14 @@ def main():
                            cwd=example, env=environment, check=True)
             subprocess.run(["terraform", "validate", "-no-color"], cwd=example, env=environment, check=True)
             subprocess.run(["terraform", "test", "-no-color"], cwd=example, env=environment, check=True)
+        harness = root / "examples/cicd/forgejo-conjur"
+        harness_environment = {**environment, "TF_DATA_DIR": str(Path(directory) / "cicd-data")}
+        print("Validating Forgejo/Conjur CI/CD harness", flush=True)
+        subprocess.run(["terraform", "init", "-backend=false", "-input=false", "-lockfile=readonly", "-no-color"],
+                       cwd=harness, env=harness_environment, check=True)
+        subprocess.run(["terraform", "validate", "-no-color"], cwd=harness, env=harness_environment, check=True)
+        subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", str(harness / "ci/tests")],
+                       cwd=root, env=harness_environment, check=True)
         subprocess.run([sys.executable, "scripts/coverage.py"], cwd=root, env=environment, check=True)
         subprocess.run([sys.executable, "scripts/check_docs.py"], cwd=root, env=environment, check=True)
         subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", "tests"], cwd=root, env=environment, check=True)
