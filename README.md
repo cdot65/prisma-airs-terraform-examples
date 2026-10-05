@@ -78,7 +78,7 @@ Terraform files use short `# Concept: purpose` comments at concept boundaries an
 
 Run `python3 scripts/validate.py` to check formatting, Registry installation, provider schema validation, 17 mocked Terraform feature tests, complete release coverage, documentation links/evidence hashes, and request-helper tests without tenant credentials. An optional [GitHub Actions template](ci/README.md) runs the per-project Terraform checks in CI; run the full script for coverage and Python tests. Recorded live results and their limits are in [validation documentation](docs/validation.md); short sanitized output excerpts appear in the guides.
 
-The CI/CD harness has 18 offline control tests and a locked provider schema check included in `scripts/validate.py`. Its [recorded cutover](examples/cicd/forgejo-conjur/live-run.md) captures real four-product adoption, state migration, and pipeline results.
+The CI/CD harness has 18 offline control tests and a locked provider schema check included in `scripts/validate.py`. Its [recorded cutover](examples/cicd/forgejo-conjur/live-run.md) captures real four-product adoption, state migration, and pipeline results. The [end-to-end lifecycle](examples/cicd/forgejo-conjur/e2e-live-run.md) also exercises real create/update/cleanup applies and review-gate refusals.
 
 Check the catalog lesson separately with `python3 scripts/validate-catalog.py`. Its [validation notes](examples/ai-gateway/provider-catalog/validation.md) distinguish live catalog discovery, a real GPT request through an existing connection, Claude authentication failures, and mocked owned-integration checks.
 

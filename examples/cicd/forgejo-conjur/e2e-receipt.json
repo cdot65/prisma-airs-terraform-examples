@@ -1,0 +1,271 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-05",
+  "completed": true,
+  "terraform": "1.16.4",
+  "provider": "0.12.0",
+  "baseline_private_commit": "e381d9b0f6a84778f4156f605e8df97a9378a1eb",
+  "final_private_commit": "3acc40d2748ddd1cf18cadcea8a4963e3811b2d7",
+  "identifiers_sanitized": true,
+  "fixture_address": "prisma-airs_runtime_custom_topic.cicd_e2e",
+  "fixture_attached_to_application": false,
+  "baseline_managed_resources": 357,
+  "original_identities_preserved": 357,
+  "original_lineage_preserved": true,
+  "final_managed_resources": 357,
+  "final_serial": 397,
+  "fixture_absent_from_independent_api": true,
+  "tracked_tree_matches_baseline": true,
+  "temporary_cleanup_exception_removed": true,
+  "source_sha256": {
+    "examples/cicd/forgejo-conjur/ci/conjur.py": "3cb93a36c1e328c25bb0bbe6d917bde3722e5aadc795518020443c38284d8e6b",
+    "examples/cicd/forgejo-conjur/ci/run.py": "de582d3193181a8287736966350fe71e9ba46e271317fb379cf51ea034276dd5",
+    "examples/cicd/forgejo-conjur/ci/install-terraform.py": "3d50e4a6b3ba53506812eb9efd0d3fc654a29eee4129dfb163a8a64c351fce5e",
+    "examples/cicd/forgejo-conjur/ci/requirements.txt": "e89a4325c8be7b7a30c165d0e2904349510f610b9449a88ae0160ed5ef32831e"
+  },
+  "restored_source_sha256": {
+    "examples/cicd/forgejo-conjur/ci/plans.py": "7c5a6782a2954c511dae650c90b057c9c1602415055937536b980954f80752ed",
+    "examples/cicd/forgejo-conjur/ci/tests/test_controls.py": "3842eb12686de64b532ebc8260c2fcc2dc1c6049c202135205244ad5c02d898a"
+  },
+  "cleanup_controls": {
+    "private_only": true,
+    "exact_address_and_observed_uuid": true,
+    "pure_delete_only": true,
+    "control_tests": 22,
+    "review": {
+      "standards": 9.2,
+      "spec": 9.3,
+      "actionable_findings": 0
+    }
+  },
+  "final_control_tests": 18,
+  "independent_api_checks": [
+    {
+      "stage": "before",
+      "independent_api_read_http": 200,
+      "matching_topics": 0,
+      "all_expected_fields_match": true
+    },
+    {
+      "stage": "created",
+      "independent_api_read_http": 200,
+      "matching_topics": 1,
+      "all_expected_fields_match": true
+    },
+    {
+      "stage": "updated",
+      "independent_api_read_http": 200,
+      "matching_topics": 1,
+      "all_expected_fields_match": true
+    },
+    {
+      "stage": "clean",
+      "independent_api_read_http": 200,
+      "matching_topics": 0,
+      "all_expected_fields_match": true
+    }
+  ],
+  "runs": [
+    {
+      "run_id": 4451,
+      "repository_run_number": 12,
+      "phase": "create PR",
+      "event": "pull_request",
+      "status": "success",
+      "commit": "2c10258b5893a97d7142ae86c6500c7bbe813334",
+      "actions": {
+        "create": 1,
+        "update": 0,
+        "delete": 0,
+        "read": 0,
+        "no-op": 357
+      }
+    },
+    {
+      "run_id": 4452,
+      "repository_run_number": 13,
+      "phase": "create main plan",
+      "event": "push",
+      "status": "success",
+      "commit": "98744b7418a68d14f7e3de7f053d04ccfdae4dc9",
+      "actions": {
+        "create": 1,
+        "update": 0,
+        "delete": 0,
+        "read": 0,
+        "no-op": 357
+      }
+    },
+    {
+      "run_id": 4453,
+      "repository_run_number": 14,
+      "phase": "no-op-only refusal",
+      "event": "workflow_dispatch",
+      "status": "failure",
+      "commit": "98744b7418a68d14f7e3de7f053d04ccfdae4dc9",
+      "expected_refusal": "First cutover apply must be a no-op"
+    },
+    {
+      "run_id": 4454,
+      "repository_run_number": 15,
+      "phase": "create apply",
+      "event": "workflow_dispatch",
+      "status": "success",
+      "commit": "98744b7418a68d14f7e3de7f053d04ccfdae4dc9",
+      "applied_plan_id": "4452-1",
+      "applied": true,
+      "noop": false,
+      "managed_resources": 358,
+      "serial": 395
+    },
+    {
+      "run_id": 4455,
+      "repository_run_number": 16,
+      "phase": "update PR",
+      "event": "pull_request",
+      "status": "success",
+      "commit": "32fc274080878cf691393ee68e8b0ef58f243fe1",
+      "actions": {
+        "create": 0,
+        "update": 1,
+        "delete": 0,
+        "read": 0,
+        "no-op": 357
+      }
+    },
+    {
+      "run_id": 4456,
+      "repository_run_number": 17,
+      "phase": "update main plan",
+      "event": "push",
+      "status": "success",
+      "commit": "dee396f06a95b4ef8d04f8e6dd281ba28420d762",
+      "actions": {
+        "create": 0,
+        "update": 1,
+        "delete": 0,
+        "read": 0,
+        "no-op": 357
+      }
+    },
+    {
+      "run_id": 4457,
+      "repository_run_number": 18,
+      "phase": "update apply",
+      "event": "workflow_dispatch",
+      "status": "success",
+      "commit": "dee396f06a95b4ef8d04f8e6dd281ba28420d762",
+      "applied_plan_id": "4456-1",
+      "applied": true,
+      "noop": false,
+      "managed_resources": 358,
+      "serial": 396
+    },
+    {
+      "run_id": 4458,
+      "repository_run_number": 19,
+      "phase": "checksum refusal",
+      "event": "workflow_dispatch",
+      "status": "failure",
+      "commit": "dee396f06a95b4ef8d04f8e6dd281ba28420d762",
+      "expected_refusal": "Reviewed plan checksum does not match the stored artifact"
+    },
+    {
+      "run_id": 4459,
+      "repository_run_number": 20,
+      "phase": "stale-commit refusal",
+      "event": "workflow_dispatch",
+      "status": "failure",
+      "commit": "dee396f06a95b4ef8d04f8e6dd281ba28420d762",
+      "expected_refusal": "Plan commit is stale; create and review a new main plan"
+    },
+    {
+      "run_id": 4460,
+      "repository_run_number": 21,
+      "phase": "cleanup PR",
+      "event": "pull_request",
+      "status": "success",
+      "commit": "75f5a4775a7253a4216a8fef246eaf294bbd6c8b",
+      "actions": {
+        "create": 0,
+        "update": 0,
+        "delete": 1,
+        "read": 0,
+        "no-op": 357
+      }
+    },
+    {
+      "run_id": 4461,
+      "repository_run_number": 22,
+      "phase": "cleanup main plan",
+      "event": "push",
+      "status": "success",
+      "commit": "eaa3dff0b1880068887fef053eef1d0896a28619",
+      "actions": {
+        "create": 0,
+        "update": 0,
+        "delete": 1,
+        "read": 0,
+        "no-op": 357
+      }
+    },
+    {
+      "run_id": 4462,
+      "repository_run_number": 23,
+      "phase": "cleanup apply",
+      "event": "workflow_dispatch",
+      "status": "success",
+      "commit": "eaa3dff0b1880068887fef053eef1d0896a28619",
+      "applied_plan_id": "4461-1",
+      "applied": true,
+      "noop": false,
+      "managed_resources": 357,
+      "serial": 397
+    },
+    {
+      "run_id": 4463,
+      "repository_run_number": 24,
+      "phase": "restore PR",
+      "event": "pull_request",
+      "status": "success",
+      "commit": "c232727ae8303c29ce2985aa9e30693b1b496359",
+      "actions": {
+        "create": 0,
+        "update": 0,
+        "delete": 0,
+        "read": 0,
+        "no-op": 357
+      }
+    },
+    {
+      "run_id": 4464,
+      "repository_run_number": 25,
+      "phase": "restored main plan",
+      "event": "push",
+      "status": "success",
+      "commit": "3acc40d2748ddd1cf18cadcea8a4963e3811b2d7",
+      "actions": {
+        "create": 0,
+        "update": 0,
+        "delete": 0,
+        "read": 0,
+        "no-op": 357
+      }
+    },
+    {
+      "run_id": 4465,
+      "repository_run_number": 26,
+      "phase": "final no-op apply",
+      "event": "workflow_dispatch",
+      "status": "success",
+      "commit": "3acc40d2748ddd1cf18cadcea8a4963e3811b2d7",
+      "applied_plan_id": "4464-1",
+      "applied": true,
+      "noop": true,
+      "managed_resources": 357,
+      "serial": 397
+    }
+  ],
+  "transcript_path": "examples/cicd/forgejo-conjur/e2e-live-run.md",
+  "transcript_sha256": "8b91a949a95de278b6e43295a6645e568e393f0a7aa2f7718b7616cd08ac015c"
+}
